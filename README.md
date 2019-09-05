@@ -32,6 +32,20 @@
 
 ```bash
 $ npm install
+
+$ npm i -g @nestjs
+
+$ npm i --save typeorm
+
+$ npm i pg 
+
+$ npm i bcrypt
+
+$ npm i --save @nestjs/passport
+
+$ npm i --save-dev @types/passport
+
+$ npm install @nestjs/jwt
 ```
 
 ## Running the app
