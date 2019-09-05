@@ -15,4 +15,9 @@ describe('UsersService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  it('findOne method should be defined', () => {
+    const id = '1';
+    expect(service.findOne(id)).toBeDefined();
+  })
 });
