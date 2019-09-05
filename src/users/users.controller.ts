@@ -1,4 +1,13 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
+import { UsersService } from './users.service';
+import { IUser } from './interfaces/user.interface';
 
 @Controller('users')
-export class UsersController {}
+export class UsersController {
+    constructor(private readonly usersService: UsersService){}
+    @Get()
+    getUsers(): Promise<IUser[]> {
+      return this.usersService.getUsers();
+    }
+  
+}
