@@ -15,4 +15,8 @@ describe('UsersService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  it('should return users', () =>{
+    expect(service.getUsers()).toBeDefined();
+  });
 });
