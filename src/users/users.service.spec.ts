@@ -15,4 +15,12 @@ describe('UsersService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  it('should throw user not found after delete user with id 1', async () => {
+    await service.delete('1')
+      .catch((error) => {
+        expect(error.status).toBe(404);
+        expect(error.message).toBe("Not found");
+    });
+  });
 });
