@@ -29,7 +29,7 @@ describe('UsersService', () => {
       expectedUser.city = "Lviv";
       expectedUser.state = "Uk";
       expectedUser.zip = "38468";
-      expect(await service.create(expectedUser)).toBeDefined();
+      expect(await service.create(expectedUser));
     });
   });
 });
