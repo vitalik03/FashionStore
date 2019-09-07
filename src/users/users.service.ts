@@ -5,13 +5,14 @@ import { IUser } from './interfaces/user.interface';
 @Injectable()
 export class UsersService {
     constructor(
-        @Inject('USER REPOSITORY')
+        @Inject('USER_REPOSITORY')
         private readonly userRepository: Repository<IUser>,
     ){}
 
-    async findOne(id: string):Promise<IUser>
+    async findOne(email: string):Promise<IUser>
     {
-        const user = await this.userRepository.findOne(id);
-		return user;
+        const userFind = await this.userRepository.findOne({
+            where: [{ "email": email }]});
+		return userFind;
 	}
 }
