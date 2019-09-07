@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, HttpException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { IUser } from './interfaces/user.interface';
 
@@ -10,6 +10,10 @@ export class UsersService {
     ){}
 
     async getById(id:string): Promise<IUser>{
+        const user = await this.userRepository.findOne(id);
+        if(!user){
+            throw await new HttpException('Not found', 404);
+        }
         return await this.userRepository.findOne(id);
     }
 }
