@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { IUser } from './interfaces/user.interface';
 
@@ -10,6 +10,10 @@ export class UsersService {
 	){}
 
 	async delete(id: string){
+		const user = await this.userRepository.findOne(id);
+		if(!user){
+			throw new HttpException("User not found", HttpStatus.NOT_FOUND);
+		}
 		return await this.userRepository.delete(id);
 	}
 
