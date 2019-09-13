@@ -10,13 +10,9 @@ export class UsersService {
 	){}
 
     async create( user: IUser ): Promise<IUser> {
-		const firstName = user.firstName;
-		const params = {
-			firstName
-		}
-		const testUser = await this.userRepository.findOne(params);
-		
-		if( testUser  && testUser.email === user.email ){
+
+		const testUser = await this.userRepository.findOne({ where: [{ "email": user.email }]});
+		if( testUser ){
 			throw new HttpException("User has already been created on this email", HttpStatus.FOUND);
 		}
 
