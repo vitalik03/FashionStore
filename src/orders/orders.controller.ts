@@ -1,4 +1,18 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
+import { OrdersService } from './orders.service';
+import { CreateOrderDto } from './dto/create-order.dto';
+import { IOrder } from './interfaces/order.interface';
+import { CreateSelectedProductDto } from 'src/selected-products/dto/create-sp.dto';
+import { SelectedProductsService } from 'src/selected-products/selected-products.service';
 
 @Controller('orders')
-export class OrdersController {}
+export class OrdersController {
+    constructor(private readonly ordersService: OrdersService, 
+                private readonly selectedProductsService: SelectedProductsService){}
+
+    @Post()
+    async createOrder(@Body() createOrder: CreateOrderDto, @Body()createSelectedProduct: CreateSelectedProductDto):Promise<IOrder>{
+        await this.selectedProductsService.create(createSelectedProduct);
+        return await this.ordersService.create(createOrder);
+    }
+}
