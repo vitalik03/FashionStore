@@ -15,6 +15,6 @@ export class Order {
     @Column()
     updatedAt: string;
     
-    @ManyToOne(type => User, user => user.orders)
+    @ManyToOne(() => User, user => user.orders)
     user: User;
 }
