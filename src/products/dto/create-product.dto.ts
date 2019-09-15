@@ -5,9 +5,7 @@ export class CreateProductDto{
     readonly brandName: string;
     readonly basicPrice: number;
     readonly description: string;
-    readonly sizes: string[];
-    readonly images: string[];
-    readonly ownerId: number;
-    readonly colors: string[];
     readonly cloth: ClothType;
+    readonly quantity: number;
+    readonly userId: number;
 }

@@ -1,5 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany} from 'typeorm';
 import { ClothType } from './enums/clothType.enum';
+import { User } from '../users/users.entity';
+import { Image } from 'src/images/images.entity';
+import { Variants } from 'src/variants/variants.entity';
 
 @Entity()
 export class Product {
@@ -18,19 +21,19 @@ export class Product {
     @Column({})
     description: string;
 
-    @Column({type: "text", array: true})
-    sizes: string[] = [];
-
-    @Column({type: "text", array: true})
-    images: string[] = [];
-
-    @Column({})
-    ownerId: number;
-
-    @Column({type: "text", array: true})
-    colors: string[] = [];
-
     @Column({})
     cloth: ClothType;
+
+    @Column({})
+    quantity: number;
+
+    @ManyToOne(() => User, user => user.products)
+    user: User;
+
+    @OneToMany(() => Image, images => images.product)
+    images: Image[];
+
+    @OneToMany(() => Variants, variants => variants.product)
+    variants: Variants[];
 
 }

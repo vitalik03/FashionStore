@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, ManyToMany, JoinTable } from 'typeorm';
+import { Product } from 'src/products/products.entity';
 
 @Entity()
 export class User {
@@ -22,6 +23,9 @@ export class User {
 
     @Column({})
     zip: string;
+
+    @OneToMany(() => Product, products => products.user)
+    products: Product[];
 
 
 }

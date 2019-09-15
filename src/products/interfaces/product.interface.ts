@@ -5,9 +5,7 @@ export interface IProduct{
     brandName: string;
     basicPrice: number;
     description: string;
-    sizes: string[];
-    images: string[];
-    ownerId: number;
-    colors: string[];
     cloth: ClothType;
+    quantity: number;
+    userId: number;
 }
