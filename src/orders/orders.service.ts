@@ -8,4 +8,8 @@ export class OrdersService {
 		@Inject('ORDERS_REPOSITORY')
         private readonly orderRepository: Repository<IOrder>,
     ){}
+
+    async getAll():Promise<IOrder[]>{
+        return await this.orderRepository.find();
+    }
 }
