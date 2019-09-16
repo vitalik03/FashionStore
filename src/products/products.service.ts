@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { IProduct } from './interfaces/product.interface';
 import { Repository } from 'typeorm';
 
@@ -12,4 +12,16 @@ export class ProductsService {
     async create(product: IProduct): Promise<IProduct>{
       return await this.productRepository.save(product);
     }
+
+    async getProducts(){
+      return await this.productRepository.find();
+  }
+
+  async getProduct(id: number): Promise<IProduct> {
+    const product = await this.productRepository.findOne(id);
+    if (!product) {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    }
+    return product;
+}
 }

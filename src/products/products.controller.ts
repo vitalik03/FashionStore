@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseInterceptors, UploadedFile, Param } from '@nestjs/common';
+import { Controller, Post, Body, UseInterceptors, UploadedFile, Param, Get } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { IProduct } from './interfaces/product.interface';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -68,6 +68,16 @@ export class ProductsController {
         producti: productId
       };
       await this.imageService.create(image)
+    }
+
+    @Get()
+    getProducts(): Promise<IProduct[]> {
+      return this.productsService.getProducts();
+    }
+
+    @Get(':id')
+    getOne(@Param('id') id): Promise<IProduct> {
+        return this.productsService.getProduct(id);
     }
 
 }
