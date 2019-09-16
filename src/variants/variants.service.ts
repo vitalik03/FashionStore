@@ -6,6 +6,10 @@ import { IVariants } from './interfaces/variants.interface';
 export class VariantsService {
     constructor(
 		@Inject('VARIANTS_REPOSITORY')
-		private readonly productRepository: Repository<IVariants>,
+		private readonly variantsRepository: Repository<IVariants>,
     ){}
+
+    async create(variants: IVariants): Promise<IVariants>{
+      return await this.variantsRepository.save(variants);
+    }
 }

@@ -1,4 +1,4 @@
 export interface IVariantValue{
-    name: string[];
-    variantTypeId: number;
+    valueName: string[];
+    variantType: number;
 }

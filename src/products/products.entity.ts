@@ -30,7 +30,7 @@ export class Product {
     @ManyToOne(() => User, user => user.products)
     user: User;
 
-    @OneToMany(() => Image, images => images.product)
+    @OneToMany(() => Image, images => images.producti)
     images: Image[];
 
     @OneToMany(() => Variants, variants => variants.product)

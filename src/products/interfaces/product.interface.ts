@@ -7,5 +7,5 @@ export interface IProduct{
     description: string;
     cloth: ClothType;
     quantity: number;
-    userId: number;
+    user: number;
 }

@@ -9,7 +9,7 @@ export class VariantType {
     id: number;
 
     @Column({})
-    name: variantsOfName;
+    typeName: variantsOfName;
 
     @OneToMany(() => VariantValue, variantValues => variantValues.variantType)
     variantValues: VariantValue[];

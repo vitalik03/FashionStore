@@ -6,6 +6,10 @@ import { IImage } from './interfaces/images.interface';
 export class ImagesService {
     constructor(
 		@Inject('IMAGE_REPOSITORY')
-		private readonly productRepository: Repository<IImage>,
+		private readonly imageRepository: Repository<IImage>,
     ){}
+
+    async create(image: IImage): Promise<IImage>{
+      return await this.imageRepository.save(image);
+    }
 }

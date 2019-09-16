@@ -7,5 +7,5 @@ export class CreateProductDto{
     readonly description: string;
     readonly cloth: ClothType;
     readonly quantity: number;
-    readonly userId: number;
+    readonly user: number;
 }

@@ -8,7 +8,7 @@ export class VariantValue {
     id: number;
 
     @Column({type: "text", array: true})
-    name: string[] = [];
+    valueName: string[] = [];
 
     @ManyToOne(() => VariantType, variantType => variantType.variantValues)
     variantType: VariantType;

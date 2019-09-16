@@ -9,4 +9,7 @@ export class ProductsService {
 		private readonly productRepository: Repository<IProduct>,
     ){}
 
+    async create(product: IProduct): Promise<IProduct>{
+      return await this.productRepository.save(product);
+    }
 }

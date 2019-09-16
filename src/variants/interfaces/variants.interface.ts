@@ -1,4 +1,4 @@
 export interface IVariants{
-    variantValueId: number;
-    productId: number;
+    variantValue: number;
+    product: number;
 }

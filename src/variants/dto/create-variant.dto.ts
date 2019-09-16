@@ -1,4 +1,4 @@
 export class CreateVariantsDto{
-    readonly variantValueId: number;
-    readonly productId: number;
+    readonly variantValue: number;
+    readonly product: number;
 }

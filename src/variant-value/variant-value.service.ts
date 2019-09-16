@@ -6,6 +6,10 @@ import { Repository } from 'typeorm';
 export class VariantValueService {
     constructor(
 		@Inject('VARIANTVALUE_REPOSITORY')
-		private readonly productRepository: Repository<IVariantValue>,
+		private readonly variantValueRepository: Repository<IVariantValue>,
     ){}
+
+    async create(variantValue: IVariantValue): Promise<IVariantValue>{
+      return await this.variantValueRepository.save(variantValue);
+    }
 }
