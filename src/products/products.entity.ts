@@ -27,7 +27,7 @@ export class Product {
     @Column({})
     quantity: number;
 
-    @ManyToOne(() => User, user => user.products)
+    @ManyToOne(() => User, user => user.products,  {onDelete: 'CASCADE'})
     user: User;
 
     @OneToMany(() => Image, images => images.producti)

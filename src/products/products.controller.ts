@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseInterceptors, UploadedFile, Param, Get } from '@nestjs/common';
+import { Controller, Post, Body, UseInterceptors, UploadedFile, Param, Get, Delete } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { IProduct } from './interfaces/product.interface';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -80,4 +80,8 @@ export class ProductsController {
         return this.productsService.getProduct(id);
     }
 
+    @Delete(':id')
+	async delete(@Param('id') id:string){
+		return await this.productsService.delete(id);
+	}
 }

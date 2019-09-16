@@ -10,7 +10,7 @@ export class VariantValue {
     @Column({type: "text", array: true})
     valueName: string[] = [];
 
-    @ManyToOne(() => VariantType, variantType => variantType.variantValues)
+    @ManyToOne(() => VariantType, variantType => variantType.variantValues, {onDelete: 'CASCADE'})
     variantType: VariantType;
     
     @OneToMany(() => Variants, variants => variants.variantValue)

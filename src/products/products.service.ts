@@ -23,5 +23,9 @@ export class ProductsService {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
     return product;
-}
+  }
+  
+  async delete(id: string){
+		return await this.productRepository.delete(id);
+	}
 }

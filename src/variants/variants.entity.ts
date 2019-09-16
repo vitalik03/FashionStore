@@ -7,9 +7,9 @@ export class Variants {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => VariantValue, variantValue => variantValue.variants)
+    @ManyToOne(() => VariantValue, variantValue => variantValue.variants, {onDelete: 'CASCADE'})
     variantValue: VariantValue;
 
-    @ManyToOne(() => Product, product => product.variants)
+    @ManyToOne(() => Product, product => product.variants, {onDelete: 'CASCADE'})
     product: Product;
 }
