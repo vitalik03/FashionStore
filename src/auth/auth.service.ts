@@ -13,7 +13,8 @@ export class AuthService {
       throw new HttpException('Not found', 404);
     }
     else{
-      if(user.password === userOne.password){
+      const comparedPasswords = bcrypt.compareSync(user.password, userOne.password);
+      if(comparedPasswords){
         return this.login(user);
       }
       else{
