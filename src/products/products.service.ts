@@ -24,8 +24,12 @@ export class ProductsService {
     }
     return product;
   }
-  
+
   async delete(id: string){
 		return await this.productRepository.delete(id);
+  }
+  
+  async update(id: string, product: IProduct){
+		return await this.productRepository.update(id, product);
 	}
 }
