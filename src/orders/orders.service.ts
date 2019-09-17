@@ -4,6 +4,7 @@ import { IOrder } from './interfaces/order.interface';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { SelectedProductsService } from 'src/selected-products/selected-products.service';
 import { CreateSelectedProductDto } from 'src/selected-products/dto/create-sp.dto';
+import { UpdateOrderDto } from './dto/update-order.dto';
 
 @Injectable()
 export class OrdersService {
@@ -20,5 +21,8 @@ export class OrdersService {
     }
     async getId(id: string):Promise<IOrder>{
         return await this.orderRepository.findOne(id);
+    }
+    async update(id: string, updateOrder: UpdateOrderDto):Promise<IOrder>{
+        return await this.orderRepository.save({ ...updateOrder, id: Number(id) });
     }
 }
