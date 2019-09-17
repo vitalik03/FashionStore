@@ -3,4 +3,5 @@ export interface IOrder {
     status: 'Completed' | 'Opened';
     createdAt: string;
     updatedAt: string;
+    userId: number;
 }
