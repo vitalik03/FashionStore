@@ -24,9 +24,14 @@ export class UsersService {
         const cryptedPass = bcrypt.hashSync(user.password,saltRounds);
         user.password = cryptedPass;
 		return await this.userRepository.save(user);
-	}
+  }
+  
     async getUsers(){
         const users = await this.userRepository.find();
         return users;
+    }
+
+    async getById(id:string): Promise<IUser>{
+        return await this.userRepository.findOne(id);
     }
 }

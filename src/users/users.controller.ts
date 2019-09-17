@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, HttpStatus, HttpException } from '@nestjs/common';
+import { Controller, Get, Post, Body, HttpStatus, HttpException, Param } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { IUser } from './interfaces/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -15,9 +15,15 @@ export class UsersController {
 	async create(@Body() createUser: CreateUserDto): Promise<IUser>{
         return await this.usersService.create(createUser);
     }
+
     @Get()
     async getUsers(): Promise<IUser[]> {
       return this.usersService.getUsers();
     };
-  
+
+    @Get(':id')
+    async getById(@Param('id') id: string): Promise<IUser>{
+        return await this.usersService.getById(id);
+    }
+    
 }

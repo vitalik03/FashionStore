@@ -23,4 +23,9 @@ describe('Users Controller', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
+
+  it('controller get by id should be defined', () => {
+    const id = '1';
+    expect(controller.getById(id)).toBeDefined();
+  })
 });
