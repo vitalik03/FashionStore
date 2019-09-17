@@ -25,4 +25,8 @@ export class UsersService {
         user.password = cryptedPass;
 		return await this.userRepository.save(user);
 	}
+    async getUsers(){
+        const users = await this.userRepository.find();
+        return users;
+    }
 }

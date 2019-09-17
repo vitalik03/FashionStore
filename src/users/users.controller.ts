@@ -5,9 +5,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { ApiResponse } from '@nestjs/swagger';
 
 
-
-
-
 @Controller('users')
 export class UsersController {
     constructor(private readonly usersService: UsersService){}
@@ -16,7 +13,11 @@ export class UsersController {
     @ApiResponse({ status: 201, description: 'User has been successfully created.'})
     @ApiResponse({ status: HttpStatus.FOUND, description: 'User has already been created on this email.'})
 	async create(@Body() createUser: CreateUserDto): Promise<IUser>{
-		return await this.usersService.create(createUser);
+        return await this.usersService.create(createUser);
     }
+    @Get()
+    async getUsers(): Promise<IUser[]> {
+      return this.usersService.getUsers();
+    };
   
 }
