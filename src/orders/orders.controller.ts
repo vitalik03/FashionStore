@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { IOrder } from './interfaces/order.interface';
@@ -19,5 +19,9 @@ export class OrdersController {
     @Get()
     async get():Promise<IOrder[]>{
         return await this.ordersService.getAll();
+    }
+    @Get(':id')
+    async getId(@Param('id') id:string):Promise<IOrder>{
+        return await this.ordersService.getId(id);
     }
 }

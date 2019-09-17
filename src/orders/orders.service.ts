@@ -18,4 +18,7 @@ export class OrdersService {
     async getAll(): Promise<IOrder[]>{
         return await this.orderRepository.find();
     }
+    async getId(id: string):Promise<IOrder>{
+        return await this.orderRepository.findOne(id);
+    }
 }
