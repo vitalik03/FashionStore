@@ -24,7 +24,7 @@ export class UsersService {
         const cryptedPass = bcrypt.hashSync(user.password,saltRounds);
         user.password = cryptedPass;
 		return await this.userRepository.save(user);
-  }
+   }
   
     async getUsers(){
         const users = await this.userRepository.find();
@@ -41,5 +41,13 @@ export class UsersService {
         throw new HttpException("User not found", HttpStatus.NOT_FOUND);
       }
       return await this.userRepository.update(id, user);
-	}
+  	}
+    async delete(id: string){
+      const user = await this.userRepository.findOne(id);
+      if(!user){
+        throw new HttpException("User not found", HttpStatus.NOT_FOUND);
+      }
+      return await this.userRepository.delete(id);
+    }
+
 }
