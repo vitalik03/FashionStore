@@ -7,4 +7,7 @@ export interface IUser{
     city: string;
     state: string;
     zip: string;
+    role: "ADMIN"|"USER";
+    createdAt: string;
+    updatedAt: string;
 }

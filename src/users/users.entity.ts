@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, ManyToMany, JoinTable } from 'typeorm';
 import { Product } from 'src/products/products.entity';
+import { Order } from 'src/orders/orders.entity';
 
 @Entity()
 export class User {
@@ -27,9 +28,19 @@ export class User {
     @Column({})
     zip: string;
 
+    @Column()
+    role: "ADMIN"|"USER";
+
+    @Column()
+    createdAt:string;
+
+    @Column()
+    updatedAt:string;
+
     @OneToMany(() => Product, products => products.user)
     products: Product[];
 
-
+    @OneToMany(() => Order, order => order.user)
+    orders: Order[];
 }
 

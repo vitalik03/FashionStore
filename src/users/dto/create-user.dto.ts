@@ -22,4 +22,13 @@ export class CreateUserDto{
     
     @ApiModelProperty()
     readonly zip: string;
+
+    @ApiModelProperty()
+    readonly role: "ADMIN" | "USER";
+
+    @ApiModelProperty()
+    readonly createdAt: string;
+
+    @ApiModelProperty()
+    readonly updatedAt: string;
 }

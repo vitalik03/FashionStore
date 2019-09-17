@@ -10,9 +10,12 @@ import { VariantValueModule } from './variant-value/variant-value.module';
 import { VariantsService } from './variants/variants.service';
 import { VariantsModule } from './variants/variants.module';
 import { AuthModule } from './auth/auth.module';
+import { OrdersModule } from './orders/orders.module';
+import { SelectedProductsModule } from './selected-products/selected-products.module';
+
 
 @Module({
-  imports: [UsersModule, ProductsModule, ImagesModule, VariantTypeModule, VariantValueModule, VariantsModule, AuthModule],
+  imports: [UsersModule, OrdersModule, SelectedProductsModule,ProductsModule, ImagesModule, VariantTypeModule, VariantValueModule, VariantsModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -27,11 +27,12 @@ export class ProductsController {
                         @Body() createVariantType: CreateVariantTypeDto,
                         @Body() createVariantValue: CreateVariantValueDto,
                         @Body() createVariants: CreateVariantsDto
-                        ){
+                        ): Promise<IProduct>{
         await this.productsService.create(createProduct);
         await this.variantTypeService.create(createVariantType);
         await this.variantValueService.create(createVariantValue);
         await this.variantsService.create(createVariants);
+        return createProduct;
     }
 
     @Post('/variants')
