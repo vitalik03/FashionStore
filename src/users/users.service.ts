@@ -34,4 +34,12 @@ export class UsersService {
     async getById(id:string): Promise<IUser>{
         return await this.userRepository.findOne(id);
     }
+    
+	  async update(id: string, user: IUser){
+      const testUser = await this.userRepository.findOne(id);
+      if(!testUser){
+        throw new HttpException("User not found", HttpStatus.NOT_FOUND);
+      }
+      return await this.userRepository.update(id, user);
+	}
 }
