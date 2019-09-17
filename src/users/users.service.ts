@@ -50,4 +50,10 @@ export class UsersService {
       return await this.userRepository.delete(id);
     }
 
+    async findOne(email: string):Promise<IUser>
+    {
+        const userFind = await this.userRepository.findOne({
+            where: [{ "email": email }]});
+		return userFind;
+	  }
 }
