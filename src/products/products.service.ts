@@ -26,10 +26,18 @@ export class ProductsService {
   }
 
   async delete(id: string){
+    const product = await this.productRepository.findOne(id);
+    if (!product) {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    }
 		return await this.productRepository.delete(id);
   }
   
   async update(id: string, product: IProduct){
+    const testproduct = await this.productRepository.findOne(id);
+    if (!testproduct) {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    }
 		return await this.productRepository.update(id, product);
 	}
 }
