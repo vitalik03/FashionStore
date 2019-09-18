@@ -36,7 +36,11 @@ export class UsersService {
         return users;
     }
 
-    async getById(id:string): Promise<IUser>{
+    async getById(id:string): Promise<User>{
+      const testUser = await this.userRepository.findOne(id);
+      if(!testUser){
+        throw new HttpException("User not found", HttpStatus.NOT_FOUND);
+      }
         return await this.userRepository.findOne(id);
     }
     
@@ -56,7 +60,7 @@ export class UsersService {
       return await this.userRepository.delete(id);
     }
 
-    async findOne(email: string):Promise<IUser>
+    async findOne(email: string):Promise<User>
     {
         const userFind = await this.userRepository.findOne({
             where: [{ "email": email }]});

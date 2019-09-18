@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, HttpException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { IOrder } from './interfaces/order.interface';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -20,9 +20,17 @@ export class OrdersService {
         return await this.orderRepository.find();
     }
     async getId(id: string):Promise<IOrder>{
-        return await this.orderRepository.findOne(id);
+        const order = await this.orderRepository.findOne(id);
+        if(!order){
+            throw new HttpException('Not found', 404);
+        }
+        return order;
     }
     async update(id: string, updateOrder: UpdateOrderDto):Promise<IOrder>{
+        const order = await this.orderRepository.findOne(id);
+        if(!order){
+            throw new HttpException('Not found', 404);
+        }
         return await this.orderRepository.save({ ...updateOrder, id: Number(id) });
     }
 }
