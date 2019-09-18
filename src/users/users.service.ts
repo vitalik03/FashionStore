@@ -3,15 +3,19 @@ import { IUser } from './interfaces/user.interface';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { saltRounds } from '../configs/bcrypt';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { IOrder } from 'src/orders/interfaces/order.interface';
+import { User } from './users.entity';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class UsersService {
     constructor(
 		@Inject('USER_REPOSITORY')
-		private readonly userRepository: Repository<IUser>,
+		private readonly userRepository: Repository<User>,
 	){}
 
-    async create( user: IUser ): Promise<IUser> {
+    async create( user: CreateUserDto ) {
 
 		const testUser = await this.userRepository.findOne({ where: [{ "email": user.email }]});
 		if( testUser ){
@@ -23,7 +27,8 @@ export class UsersService {
         }
         const cryptedPass = bcrypt.hashSync(user.password,saltRounds);
         user.password = cryptedPass;
-		return await this.userRepository.save(user);
+        const entity = Object.assign(new User(), user);
+		return await this.userRepository.save(entity);
    }
   
     async getUsers(){
@@ -35,13 +40,14 @@ export class UsersService {
         return await this.userRepository.findOne(id);
     }
     
-	  async update(id: string, user: IUser){
+	  async update(id: string, updateUser: UpdateUserDto): Promise<IUser>{
       const testUser = await this.userRepository.findOne(id);
       if(!testUser){
         throw new HttpException("User not found", HttpStatus.NOT_FOUND);
       }
-      return await this.userRepository.update(id, user);
-  	}
+      return await this.userRepository.save({ ...updateUser, id: Number(id) });
+    }
+    
     async delete(id: string){
       const user = await this.userRepository.findOne(id);
       if(!user){

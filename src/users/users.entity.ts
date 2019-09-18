@@ -1,6 +1,8 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, ManyToMany, JoinTable } from 'typeorm';
 import { Product } from 'src/products/products.entity';
 import { Order } from 'src/orders/orders.entity';
+import { Exclude } from "class-transformer";
+
 
 @Entity()
 export class User {
