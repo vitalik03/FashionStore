@@ -32,9 +32,6 @@ export class User {
     zip: string;
 
     @Column()
-    role: "ADMIN"|"USER";
-
-    @Column()
     createdAt:string;
 
     @Column()
