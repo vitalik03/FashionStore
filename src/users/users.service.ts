@@ -80,6 +80,7 @@ export class UsersService {
       else{
         const hashedPassword = await bcrypt.hash(password.newPassword, 10);
         user.password = hashedPassword;
+        await this.userRepository.save({user, id: Number(password.id)});
         return "Success" ;
       }
     }
