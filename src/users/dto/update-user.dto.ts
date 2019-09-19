@@ -23,8 +23,8 @@ export class UpdateUserDto{
     readonly role: "ADMIN" | "USER";
 
     @ApiModelProperty()
-    readonly createdAt: string;
+    createdAt: string;
 
     @ApiModelProperty()
-    readonly updatedAt: string;
+    updatedAt: string;
 }

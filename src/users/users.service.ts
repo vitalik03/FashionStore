@@ -20,7 +20,8 @@ export class UsersService {
 		const testUser = await this.userRepository.findOne({ where: [{ "email": user.email }]});
 		if( testUser ){
 			throw new HttpException("User has already been created on this email", HttpStatus.FOUND);
-		}
+    }
+    user.createdAt = new Date().toString();
     const entity = Object.assign(new User(), user);
 		return await this.userRepository.save(entity);
    }
@@ -44,6 +45,7 @@ export class UsersService {
       if(!testUser){
         throw new HttpException("User not found", HttpStatus.NOT_FOUND);
       }
+      updateUser.updatedAt = new Date().toString();
       return await this.userRepository.save({ ...updateUser, id: Number(id) });
     }
     
