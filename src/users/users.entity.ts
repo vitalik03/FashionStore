@@ -40,10 +40,10 @@ export class User {
     zip: string;
 
     @Column()
-    createdAt:string;
+    createdAt:Date;
 
     @Column()
-    updatedAt:string;
+    updatedAt:Date;
 
     @OneToMany(() => Product, products => products.user)
     products: Product[];

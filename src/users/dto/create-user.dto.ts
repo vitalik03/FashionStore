@@ -36,11 +36,9 @@ export class CreateUserDto{
     @ApiModelProperty()
     readonly zip: string;
 
-    @ApiModelProperty()
-    readonly createdAt: string;
+    createdAt: Date;
 
-    @ApiModelProperty()
-    readonly updatedAt: string;
+    updatedAt: Date;
 }
 
 export class UserLogin {

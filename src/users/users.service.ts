@@ -22,16 +22,19 @@ export class UsersService {
 			throw new HttpException("User has already been created on this email", HttpStatus.FOUND);
 		}
     const entity = Object.assign(new User(), user);
+    const time = new Date();
+    entity.createdAt = time;
+    entity.updatedAt = time;
 		return await this.userRepository.save(entity);
    }
    
   
-    async getUsers(){
+    async getUsers(): Promise<IUser[]>{
         const users = await this.userRepository.find();
         return users;
     }
 
-    async getById(id:string): Promise<User>{
+    async getById(id:string): Promise<IUser>{
       const testUser = await this.userRepository.findOne(id);
       if(!testUser){
         throw new HttpException("User not found", HttpStatus.NOT_FOUND);
@@ -44,6 +47,8 @@ export class UsersService {
       if(!testUser){
         throw new HttpException("User not found", HttpStatus.NOT_FOUND);
       }
+      const time = new Date();
+      updateUser.updatedAt = time;
       return await this.userRepository.save({ ...updateUser, id: Number(id) });
     }
     

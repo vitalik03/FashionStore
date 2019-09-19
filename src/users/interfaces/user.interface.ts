@@ -7,8 +7,8 @@ export class IUser{
     city: string;
     state: string;
     zip: string;
-    createdAt: string;
-    updatedAt: string;
+    createdAt: Date;
+    updatedAt: Date;
 
     @Exclude()
     password: string;

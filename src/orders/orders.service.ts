@@ -14,8 +14,9 @@ export class OrdersService {
     ){}
     
     async create(order: CreateOrderDto):Promise<IOrder>{
-        order.createdAt = new Date();
-        order.updatedAt = new Date();
+        const time = new Date();
+        order.createdAt = time;
+        order.updatedAt = time;
         return await this.orderRepository.save(order);
     }
     async getAll(): Promise<IOrder[]>{
