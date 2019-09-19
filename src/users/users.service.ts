@@ -22,6 +22,7 @@ export class UsersService {
 			throw new HttpException("User has already been created on this email", HttpStatus.FOUND);
     }
     user.createdAt = new Date().toString();
+    user.updatedAt = new Date().toString();
     const entity = Object.assign(new User(), user);
 		return await this.userRepository.save(entity);
    }
