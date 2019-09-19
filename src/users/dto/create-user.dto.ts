@@ -15,6 +15,7 @@ export class CreateUserDto{
     readonly lastName: string;
 
     @IsNotEmpty()
+    @MinLength(8)
     @ApiModelProperty()
     password: string;
     
@@ -42,10 +43,16 @@ export class CreateUserDto{
     readonly updatedAt: string;
 }
 
-export class CreateUserLoginDto{
-    @ApiModelProperty()
-    email: string;
+export class UserLogin {
 
+    @IsEmail()
+    @IsNotEmpty()
     @ApiModelProperty()
-    password: string;
-}
+    readonly email: string;
+  
+    @MinLength(8)
+    @IsNotEmpty()
+    @ApiModelProperty()
+    readonly password: string;
+  
+  }

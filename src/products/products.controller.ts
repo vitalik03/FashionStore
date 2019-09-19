@@ -24,25 +24,20 @@ export class ProductsController {
 
     @Post()
     async createProduct(@Body() createProduct: CreateProductDto,
-                        @Body() createVariantType: CreateVariantTypeDto,
-                        @Body() createVariantValue: CreateVariantValueDto,
-                        @Body() createVariants: CreateVariantsDto
                         ): Promise<IProduct>{
-        await this.productsService.create(createProduct);
-        await this.variantTypeService.create(createVariantType);
-        await this.variantValueService.create(createVariantValue);
-        await this.variantsService.create(createVariants);
-        return createProduct;
+      return await this.productsService.create(createProduct);
     }
 
     @Post('/variants')
-    async createVariants(@Body() createVariantType: CreateVariantTypeDto,
-                        @Body() createVariantValue: CreateVariantValueDto,
-                        @Body() createVariants: CreateVariantsDto
+    async createVariants(
+                        @Body() createVariantType: CreateVariantTypeDto,
+                        @Body() createVariantValue: CreateVariantValueDto,                      
+                        @Body() createVariants: CreateVariantsDto,
                         ){
         await this.variantTypeService.create(createVariantType);
         await this.variantValueService.create(createVariantValue);
         await this.variantsService.create(createVariants);
+        return createVariants;
     }
 
     @Post(':productId')
@@ -69,6 +64,7 @@ export class ProductsController {
         producti: productId
       };
       await this.imageService.create(image)
+      return image;
     }
 
     @Get()
@@ -87,7 +83,7 @@ export class ProductsController {
     }
     
     @Put(':id')
-	async update(@Param('id') id: string, @Body() updateProduct: CreateProductDto){
+	async update(@Param('id') id: string, @Body() updateProduct: CreateProductDto): Promise<IProduct>{
 		return await this.productsService.update(id, updateProduct);
 	}
 }

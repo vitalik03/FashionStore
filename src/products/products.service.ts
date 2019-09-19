@@ -33,11 +33,11 @@ export class ProductsService {
 		return await this.productRepository.delete(id);
   }
   
-  async update(id: string, product: IProduct){
+  async update(id: string, product: IProduct): Promise<IProduct>{
     const testproduct = await this.productRepository.findOne(id);
     if (!testproduct) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
-		return await this.productRepository.update(id, product);
+		return await this.productRepository.save({ ...product, id: Number(id) });
 	}
 }
