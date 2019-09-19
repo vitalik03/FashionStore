@@ -14,6 +14,8 @@ export class OrdersService {
     ){}
     
     async create(order: CreateOrderDto):Promise<IOrder>{
+        order.createdAt = new Date();
+        order.updatedAt = new Date();
         return await this.orderRepository.save(order);
     }
     async getAll(): Promise<IOrder[]>{
@@ -31,6 +33,8 @@ export class OrdersService {
         if(!order){
             throw new HttpException('Not found', 404);
         }
+        const time = new Date();
+        updateOrder.updatedAt = time;
         return await this.orderRepository.save({ ...updateOrder, id: Number(id) });
     }
 }

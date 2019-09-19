@@ -5,5 +5,5 @@ export class UpdateOrderDto {
     readonly status: 'Completed'| 'Opened';
 
     @ApiModelProperty()
-    readonly updatedAt: string;
+    updatedAt: Date;
 }

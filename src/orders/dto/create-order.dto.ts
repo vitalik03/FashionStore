@@ -9,10 +9,10 @@ export class CreateOrderDto {
     readonly status: 'Completed'| 'Opened';
     
     @ApiModelProperty()
-    readonly createdAt: string;
+    createdAt: Date;
     
     @ApiModelProperty()
-    readonly updatedAt: string;
+    updatedAt: Date;
     
     @ApiModelProperty()
     readonly userId: number;

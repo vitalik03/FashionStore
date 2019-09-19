@@ -11,10 +11,10 @@ export class Order {
     status: 'Completed'| 'Opened';
 
     @Column()
-    createdAt: string;
+    createdAt: Date;
 
     @Column()
-    updatedAt: string;
+    updatedAt: Date;
     
 
     @OneToMany(() =>SelectedProducts, selectedProducts => selectedProducts.order)
