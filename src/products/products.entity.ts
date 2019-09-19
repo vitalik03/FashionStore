@@ -27,6 +27,12 @@ export class Product {
     @Column({})
     quantity: number;
 
+    @Column({})
+    createdAt: Date;
+
+    @Column({})
+    updatedAt: Date;
+    
     @ManyToOne(() => User, user => user.products,  {onDelete: 'CASCADE'})
     user: User;
 

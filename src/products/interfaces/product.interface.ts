@@ -8,4 +8,6 @@ export interface IProduct{
     cloth: ClothType;
     quantity: number;
     user: number;
+    createdAt: Date;
+    updatedAt: Date;
 }

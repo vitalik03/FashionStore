@@ -10,6 +10,9 @@ export class ProductsService {
     ){}
 
     async create(product: IProduct): Promise<IProduct>{
+      const time = new Date();
+      product.createdAt = time;
+      product.updatedAt = time;
       return await this.productRepository.save(product);
     }
 
@@ -38,6 +41,8 @@ export class ProductsService {
     if (!testproduct) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
+    const time = new Date();
+    product.updatedAt = time;
 		return await this.productRepository.save({ ...product, id: Number(id) });
 	}
 }
