@@ -7,6 +7,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { IOrder } from 'src/orders/interfaces/order.interface';
 import { User } from './users.entity';
 import { CreateUserDto } from './dto/create-user.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Injectable()
 export class UsersService {
@@ -65,5 +66,21 @@ export class UsersService {
         const userFind = await this.userRepository.findOne({
             where: [{ "email": email }]});
 		return userFind;
-	  }
+    }
+    
+    async changePassword(password: ChangePasswordDto):Promise<string>{
+      const user = await this.userRepository.findOne(password.id);
+      if(!user){
+        throw new HttpException("User not found", HttpStatus.NOT_FOUND);
+      }
+      const comparedPasswords = await bcrypt.compareSync(user.password, password.oldPassword);
+      if(!comparedPasswords){
+        throw new HttpException("Wrong password", 400);
+      }
+      else{
+        const hashedPassword = await bcrypt.hash(password.newPassword, 10);
+        user.password = hashedPassword;
+        return "Success" ;
+      }
+    }
 }

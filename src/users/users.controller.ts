@@ -4,6 +4,7 @@ import { IUser } from './interfaces/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ApiResponse } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 
 @Controller('users')
@@ -17,6 +18,10 @@ export class UsersController {
         return await this.usersService.create(createUser);
     }
 
+    @Put('change-password')
+    async changePassword(@Body() password: ChangePasswordDto): Promise<string>{
+        return this.usersService.changePassword(password);
+    }
     @Get()
     async getUsers(): Promise<IUser[]> {
       return this.usersService.getUsers();
