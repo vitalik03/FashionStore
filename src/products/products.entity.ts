@@ -36,10 +36,10 @@ export class Product {
     @ManyToOne(() => User, user => user.products,  {onDelete: 'CASCADE'})
     user: User;
 
-    @OneToMany(() => Image, images => images.producti)
+    @OneToMany(() => Image, images => images.producti, {cascade: true})
     images: Image[];
 
-    @OneToMany(() => Variants, variants => variants.product)
+    @OneToMany(() => Variants, variants => variants.product, {cascade: true})
     variants: Variants[];
 
 }

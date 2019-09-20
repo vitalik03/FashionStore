@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseInterceptors, UploadedFile, Param, Get, Delete, Put } from '@nestjs/common';
+import { Controller, Post, Body, UseInterceptors, UploadedFile, Param, Get, Delete, Put, Res } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { IProduct } from './interfaces/product.interface';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -11,6 +11,7 @@ import { CreateVariantValueDto } from 'src/variant-value/dto/create-variantValue
 import { CreateVariantsDto } from 'src/variants/dto/create-variant.dto';
 import { diskStorage } from 'multer';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { IImage } from 'src/images/interfaces/images.interface';
 
 
 @Controller('products')
@@ -66,6 +67,17 @@ export class ProductsController {
       await this.imageService.create(image)
       return image;
     }
+
+    @Get('images/:imgpath')
+    seeUploadedFile(@Param('imgpath') image: string, @Res() res){
+      return res.sendFile(image, { root: './files'});
+    }
+
+    @Get('images')
+    getImages(): Promise<IImage[]>{
+      return this.imageService.getAll();
+    }
+
 
     @Get()
     getProducts(): Promise<IProduct[]> {

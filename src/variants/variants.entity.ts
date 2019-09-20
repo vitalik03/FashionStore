@@ -14,6 +14,6 @@ export class Variants {
     @ManyToOne(() => Product, product => product.variants, {onDelete: 'CASCADE'})
     product: Product;
 
-    @OneToMany(() => SelectedProducts, selectedProducts => selectedProducts.variants)
+    @OneToMany(() => SelectedProducts, selectedProducts => selectedProducts.variants, {cascade: true})
     selectedProducts: SelectedProducts[];
 }

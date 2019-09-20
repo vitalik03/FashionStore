@@ -12,4 +12,8 @@ export class ImagesService {
     async create(image: IImage): Promise<IImage>{
       return await this.imageRepository.save(image);
     }
+
+    async getAll(){
+      return await this.imageRepository.find();
+    }
 }

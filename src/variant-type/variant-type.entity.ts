@@ -11,7 +11,7 @@ export class VariantType {
     @Column({})
     typeName: variantsOfName;
 
-    @OneToMany(() => VariantValue, variantValues => variantValues.variantType)
+    @OneToMany(() => VariantValue, variantValues => variantValues.variantType, {cascade: true})
     variantValues: VariantValue[];
 
 

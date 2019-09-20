@@ -48,10 +48,10 @@ export class User {
     @Column()
     updatedAt:Date;
 
-    @OneToMany(() => Product, products => products.user)
+    @OneToMany(() => Product, products => products.user, {cascade: true})
     products: Product[];
 
-    @OneToMany(() => Order, order => order.user)
+    @OneToMany(() => Order, order => order.user, {cascade: true})
     orders: Order[];
 }
 

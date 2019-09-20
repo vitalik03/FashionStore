@@ -13,7 +13,7 @@ export class VariantValue {
     @ManyToOne(() => VariantType, variantType => variantType.variantValues, {onDelete: 'CASCADE'})
     variantType: VariantType;
     
-    @OneToMany(() => Variants, variants => variants.variantValue)
+    @OneToMany(() => Variants, variants => variants.variantValue, {cascade: true})
     variants: Variants[];
 
 }
