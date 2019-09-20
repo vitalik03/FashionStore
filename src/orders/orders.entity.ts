@@ -17,7 +17,7 @@ export class Order {
     updatedAt: Date;
     
 
-    @OneToMany(() =>SelectedProducts, selectedProducts => selectedProducts.order)
+    @OneToMany(() =>SelectedProducts, selectedProducts => selectedProducts.order, {cascade: true})
     selectedProducts: SelectedProducts[];
 
     @ManyToOne(() => User, user => user.orders)

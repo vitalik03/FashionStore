@@ -9,12 +9,10 @@ import { UpdateOrderDto } from './dto/update-order.dto';
 
 @Controller('orders')
 export class OrdersController {
-    constructor(private readonly ordersService: OrdersService, 
-                private readonly selectedProductsService: SelectedProductsService){}
+    constructor(private readonly ordersService: OrdersService){}
 
     @Post()
-    async createOrder(@Body() createOrder: CreateOrderDto, @Body()createSelectedProduct: CreateSelectedProductDto):Promise<IOrder>{
-        await this.selectedProductsService.create(createSelectedProduct);
+    async createOrder(@Body() createOrder: CreateOrderDto):Promise<IOrder>{
         return await this.ordersService.create(createOrder);
     }
     @Get()

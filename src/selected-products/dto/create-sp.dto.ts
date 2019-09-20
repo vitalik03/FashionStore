@@ -13,4 +13,6 @@ export class CreateSelectedProductDto{
     @ApiModelProperty()
     readonly orderId :number;
     
+    @ApiModelProperty()
+    readonly variantsId: number;
 }
