@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, AfterInsert, AfterUpdate} from 'typeorm';
 import { ClothType } from './enums/clothType.enum';
 import { User } from '../users/users.entity';
 import { Image } from 'src/images/images.entity';
@@ -27,11 +27,29 @@ export class Product {
     @Column({})
     quantity: number;
 
-    @Column({})
-    createdAt: Date;
+    @Column()
+    createdAt:Date;
 
-    @Column({})
-    updatedAt: Date;
+    @AfterInsert()
+    async createDate() {
+        const date = new Date();
+        this.createdAt = date;
+    }
+
+    @Column()
+    updatedAt:Date;
+
+    @AfterInsert()
+    async createUpdateDate() {
+        const date = new Date();
+        this.updatedAt = date;
+    }
+
+    @AfterUpdate()
+    async updateDate() {
+        const date = new Date();
+        this.updatedAt = date;
+    }
     
     @ManyToOne(() => User, user => user.products,  {onDelete: 'CASCADE'})
     user: User;

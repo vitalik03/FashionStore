@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, AfterInsert, AfterUpdate } from 'typeorm';
 import { User } from 'src/users/users.entity';
 import { SelectedProducts } from 'src/selected-products/selected-products.entity';
 
@@ -11,10 +11,28 @@ export class Order {
     status: 'Completed'| 'Opened';
 
     @Column()
-    createdAt: Date;
+    createdAt:Date;
+
+    @AfterInsert()
+    async createDate() {
+        const date = new Date();
+        this.createdAt = date;
+    }
 
     @Column()
-    updatedAt: Date;
+    updatedAt:Date;
+
+    @AfterInsert()
+    async createUpdateDate() {
+        const date = new Date();
+        this.updatedAt = date;
+    }
+
+    @AfterUpdate()
+    async updateDate() {
+        const date = new Date();
+        this.updatedAt = date;
+    }
     
 
     @OneToMany(() =>SelectedProducts, selectedProducts => selectedProducts.order, {cascade: true})

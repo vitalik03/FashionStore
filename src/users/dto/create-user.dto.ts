@@ -39,9 +39,9 @@ export class CreateUserDto{
     @ApiModelProperty()
     readonly role: "ADMIN" | "USER";
 
-    createdAt: Date;
+    readonly createdAt: Date;
 
-    updatedAt: Date;
+    readonly updatedAt: Date;
 }
 
 export class UserLogin {

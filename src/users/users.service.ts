@@ -23,9 +23,6 @@ export class UsersService {
 			throw new HttpException(existingEmail, HttpStatus.FOUND);
 		}
     const entity = Object.assign(new User(), user);
-    const time = new Date();
-    entity.createdAt = time;
-    entity.updatedAt = time;
 		return await this.userRepository.save(entity);
    }
    
@@ -48,8 +45,6 @@ export class UsersService {
       if(!testUser){
         throw new HttpException(userNotFound, HttpStatus.NOT_FOUND);
       }
-      const time = new Date();
-      updateUser.updatedAt = time;
       return await this.userRepository.save({ ...updateUser, id: Number(id) });
     }
     

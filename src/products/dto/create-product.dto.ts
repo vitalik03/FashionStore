@@ -23,7 +23,7 @@ export class CreateProductDto{
     @ApiModelProperty()
     readonly user: number;
 
-    createdAt: Date;
+    readonly createdAt: Date;
 
-    updatedAt: Date;
+    readonly updatedAt: Date;
 }

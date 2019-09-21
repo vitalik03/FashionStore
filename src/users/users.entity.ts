@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, ManyToMany, JoinTable, BeforeInsert } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, ManyToMany, JoinTable, AfterUpdate, AfterInsert, BeforeInsert } from 'typeorm';
 import { Product } from 'src/products/products.entity';
 import { Order } from 'src/orders/orders.entity';
 import { Exclude } from "class-transformer";
@@ -45,8 +45,26 @@ export class User {
     @Column()
     createdAt:Date;
 
+    @AfterInsert()
+    async createDate() {
+        const date = new Date();
+        this.createdAt = date;
+    }
+
     @Column()
     updatedAt:Date;
+
+    @AfterInsert()
+    async createUpdateDate() {
+        const date = new Date();
+        this.updatedAt = date;
+    }
+
+    @AfterUpdate()
+    async updateDate() {
+        const date = new Date();
+        this.updatedAt = date;
+    }
 
     @OneToMany(() => Product, products => products.user, {cascade: true})
     products: Product[];

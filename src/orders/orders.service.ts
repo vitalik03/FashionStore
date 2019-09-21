@@ -13,10 +13,7 @@ export class OrdersService {
         private readonly orderRepository: Repository<IOrder>,
     ){}
     
-    async create(order: CreateOrderDto):Promise<IOrder>{
-        const time = new Date();
-        order.createdAt = time;
-        order.updatedAt = time;
+    async create(order: CreateOrderDto):Promise<IOrder>{        
         return await this.orderRepository.save(order);
     }
     async getAll(): Promise<IOrder[]>{
@@ -34,8 +31,6 @@ export class OrdersService {
         if(!order){
             throw new HttpException(orderNotFound, 404);
         }
-        const time = new Date();
-        updateOrder.updatedAt = time;
         return await this.orderRepository.save({ ...updateOrder, id: Number(id) });
     }
 }

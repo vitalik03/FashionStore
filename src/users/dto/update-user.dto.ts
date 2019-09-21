@@ -22,5 +22,5 @@ export class UpdateUserDto{
     @ApiModelProperty()
     readonly role: "ADMIN" | "USER";
 
-    updatedAt: Date;
+    readonly updatedAt: Date;
 }
