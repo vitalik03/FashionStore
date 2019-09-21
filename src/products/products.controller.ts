@@ -13,7 +13,7 @@ import { diskStorage } from 'multer';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { IImage } from 'src/images/interfaces/images.interface';
 import { Product } from './products.entity';
-
+import {succesfulDeleting, imageError} from '../constants/product-responses'
 
 @Controller('products')
 export class ProductsController {
@@ -54,7 +54,7 @@ export class ProductsController {
       }),
       fileFilter: (req, file, callback) => {
         if(!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)){
-          return callback(new Error('Only image file are allowed'),false);
+          return callback(new Error(imageError),false);
         }
         callback(null,true);
       }
@@ -65,7 +65,7 @@ export class ProductsController {
         imageURL: file.filename,
         producti: productId
       };
-      await this.imageService.create(image)
+      await this.imageService.create(image);
       return image;
     }
 
@@ -93,7 +93,7 @@ export class ProductsController {
     @Delete(':id/:userId')
    async delete(@Param('id') id: number, @Param('userId') userId : number){
     await this.productsService.delete(id, userId);
-    const message = "Product was successfully deleted"
+    const message = succesfulDeleting;
     return message;
   }
     

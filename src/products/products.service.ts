@@ -3,6 +3,7 @@ import { IProduct } from './interfaces/product.interface';
 import { Repository } from 'typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
 import { Product } from './products.entity';
+import {productNotFound} from '../constants/product-responses'
 
 @Injectable()
 export class ProductsService {
@@ -25,7 +26,7 @@ export class ProductsService {
   async getProduct(id: string): Promise<IProduct> {
     const product = await this.productRepository.findOne(id);
     if (!product) {
-      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+      throw new HttpException(productNotFound, HttpStatus.NOT_FOUND);
     }
     return product;
   }
@@ -35,7 +36,7 @@ export class ProductsService {
     const product = await this.productRepository.findOne(id, {relations:['user']})
     
     if (JSON.stringify(checkProductByOwner.user) !== JSON.stringify(product.user)) {
-      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+      throw new HttpException(productNotFound, HttpStatus.NOT_FOUND);
     }
 		return await this.productRepository.delete(id);
   }
@@ -43,7 +44,7 @@ export class ProductsService {
   async update(id: string, product: IProduct): Promise<IProduct>{
     const testproduct = await this.productRepository.findOne(id);
     if (!testproduct) {
-      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+      throw new HttpException(productNotFound, HttpStatus.NOT_FOUND);
     }
     const time = new Date();
     product.updatedAt = time;

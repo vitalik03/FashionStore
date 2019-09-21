@@ -6,15 +6,15 @@ import { ApiResponse } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { AuthGuard } from '@nestjs/passport';
-
+import {succesfulCreating, existingEmail} from '../constants/user-responses'
 
 @Controller('users')
 export class UsersController {
     constructor(private readonly usersService: UsersService){}
 
     @Post()
-    @ApiResponse({ status: 201, description: 'User has been successfully created.'})
-    @ApiResponse({ status: HttpStatus.FOUND, description: 'User has already been created on this email.'})
+    @ApiResponse({ status: 201, description: succesfulCreating})
+    @ApiResponse({ status: HttpStatus.FOUND, description: existingEmail})
 	async create(@Body() createUser: CreateUserDto){
         return await this.usersService.create(createUser);
     }

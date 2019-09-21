@@ -8,19 +8,19 @@ import { IOrder } from 'src/orders/interfaces/order.interface';
 import { User } from './users.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
-
+import {userNotFound, existingEmail} from '../constants/user-responses'
 @Injectable()
 export class UsersService {
     constructor(
 		@Inject('USER_REPOSITORY')
-		private readonly userRepository: Repository<User>,
+    private readonly userRepository: Repository<User>,
 	){}
 
     async create( user: CreateUserDto ) {
 
 		const testUser = await this.userRepository.findOne({ where: [{ "email": user.email }]});
 		if( testUser ){
-			throw new HttpException("User has already been created on this email", HttpStatus.FOUND);
+			throw new HttpException(existingEmail, HttpStatus.FOUND);
 		}
     const entity = Object.assign(new User(), user);
     const time = new Date();
@@ -38,7 +38,7 @@ export class UsersService {
     async getById(id:string): Promise<IUser>{
       const testUser = await this.userRepository.findOne(id);
       if(!testUser){
-        throw new HttpException("User not found", HttpStatus.NOT_FOUND);
+        throw new HttpException(userNotFound, HttpStatus.NOT_FOUND);
       }
         return await this.userRepository.findOne(id);
     }
@@ -46,7 +46,7 @@ export class UsersService {
 	  async update(id: string, updateUser: UpdateUserDto): Promise<IUser>{
       const testUser = await this.userRepository.findOne(id);
       if(!testUser){
-        throw new HttpException("User not found", HttpStatus.NOT_FOUND);
+        throw new HttpException(userNotFound, HttpStatus.NOT_FOUND);
       }
       const time = new Date();
       updateUser.updatedAt = time;
@@ -56,7 +56,7 @@ export class UsersService {
     async delete(id: string){
       const user = await this.userRepository.findOne(id);
       if(!user){
-        throw new HttpException("User not found", HttpStatus.NOT_FOUND);
+        throw new HttpException(userNotFound, HttpStatus.NOT_FOUND);
       }
       return await this.userRepository.delete(id);
     }
@@ -71,7 +71,7 @@ export class UsersService {
     async changePassword(password: ChangePasswordDto):Promise<string>{
       const user = await this.userRepository.findOne(password.id);
       if(!user){
-        throw new HttpException("User not found", HttpStatus.NOT_FOUND);
+        throw new HttpException(userNotFound, HttpStatus.NOT_FOUND);
       }
       const comparedPasswords = await bcrypt.compareSync(user.password, password.oldPassword);
       if(!comparedPasswords){
