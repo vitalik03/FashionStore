@@ -8,12 +8,5 @@ import { UserLogin } from './users/dto/create-user.dto';
 
 @Controller()
 export class AppController {
-  constructor(
-    private readonly usersService: UsersService,
-    private readonly authService: AuthService) {}
-  @Post('login')
-  async login(@Body() user: UserLogin){
-    return await this.authService.validate(user);
-  }
 }
 

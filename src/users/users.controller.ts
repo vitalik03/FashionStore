@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body, HttpStatus, HttpException, Param, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, HttpStatus, HttpException, Param, Put, Delete, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { IUser } from './interfaces/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ApiResponse } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 
 @Controller('users')
@@ -22,6 +23,8 @@ export class UsersController {
     async changePassword(@Body() password: ChangePasswordDto): Promise<string>{
         return this.usersService.changePassword(password);
     }
+    
+    @UseGuards(AuthGuard('jwt'))
     @Get()
     async getUsers(): Promise<IUser[]> {
       return this.usersService.getUsers();

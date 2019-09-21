@@ -9,7 +9,6 @@ import { User } from 'src/users/users.entity';
 @Injectable()
 export class AuthService {
     constructor(private readonly usersService: UsersService, private readonly jwtService: JwtService) {}
-    
 
     async validate(user: UserLogin){
       const userOne = await getRepository(User)
@@ -22,7 +21,6 @@ export class AuthService {
       }
       else{
         const comparedPasswords = await bcrypt.compareSync(user.password, userOne.password);
-        console.log(user.password, '-------------',userOne.password);
         if(comparedPasswords){
           return this.login(user);
         }
@@ -31,6 +29,7 @@ export class AuthService {
         }
       }
   }
+  
    async login(user: UserLogin){
         const payload = { email: user.email, password: user.password};
         const userOne = await this.usersService.findOne(user.email);
