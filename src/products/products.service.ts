@@ -1,6 +1,8 @@
 import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { IProduct } from './interfaces/product.interface';
 import { Repository } from 'typeorm';
+import { CreateProductDto } from './dto/create-product.dto';
+import { Product } from './products.entity';
 
 @Injectable()
 export class ProductsService {
@@ -20,7 +22,7 @@ export class ProductsService {
       return await this.productRepository.find();
   }
 
-  async getProduct(id: number): Promise<IProduct> {
+  async getProduct(id: string): Promise<IProduct> {
     const product = await this.productRepository.findOne(id);
     if (!product) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
@@ -28,9 +30,11 @@ export class ProductsService {
     return product;
   }
 
-  async delete(id: string){
-    const product = await this.productRepository.findOne(id);
-    if (!product) {
+  async delete(id: number, userId: number){
+    const checkProductByOwner = await this.productRepository.findOne({ where: { "user": userId }, relations:['user']});
+    const product = await this.productRepository.findOne(id, {relations:['user']})
+    
+    if (JSON.stringify(checkProductByOwner.user) !== JSON.stringify(product.user)) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
 		return await this.productRepository.delete(id);
@@ -44,5 +48,5 @@ export class ProductsService {
     const time = new Date();
     product.updatedAt = time;
 		return await this.productRepository.save({ ...product, id: Number(id) });
-	}
+  }
 }

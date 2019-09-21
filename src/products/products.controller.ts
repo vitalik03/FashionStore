@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseInterceptors, UploadedFile, Param, Get, Delete, Put, Res } from '@nestjs/common';
+import { Controller, Post, Body, UseInterceptors, UploadedFile, Param, Get, Delete, Put, Res, HttpException } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { IProduct } from './interfaces/product.interface';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -12,6 +12,7 @@ import { CreateVariantsDto } from 'src/variants/dto/create-variant.dto';
 import { diskStorage } from 'multer';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { IImage } from 'src/images/interfaces/images.interface';
+import { Product } from './products.entity';
 
 
 @Controller('products')
@@ -85,14 +86,16 @@ export class ProductsController {
     }
 
     @Get(':id')
-    getOne(@Param('id') id): Promise<IProduct> {
-        return this.productsService.getProduct(id);
+   async getOne(@Param('id') id: string): Promise<IProduct> {
+      return this.productsService.getProduct(id);
     }
 
-    @Delete(':id')
-	async delete(@Param('id') id:string){
-		return await this.productsService.delete(id);
-    }
+    @Delete(':id/:userId')
+	async delete(@Param('id') id: number, @Param('userId') userId : number){
+    await this.productsService.delete(id, userId);
+    const message = "Product was successfully deleted"
+    return message;
+  }
     
     @Put(':id')
 	async update(@Param('id') id: string, @Body() updateProduct: CreateProductDto): Promise<IProduct>{
