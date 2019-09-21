@@ -14,7 +14,7 @@ export class AuthController {
 
     @Post('login')
     async login(@Body() user: UserLogin) {
-       return await this.authService.login(user);
+       return await this.authService.validate(user);
     }
 
     @ApiBearerAuth()

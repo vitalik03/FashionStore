@@ -1,7 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, ManyToMany, JoinTable, AfterUpdate, AfterInsert, BeforeInsert } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, ManyToMany, JoinTable, AfterUpdate, AfterInsert, BeforeInsert, BeforeUpdate } from 'typeorm';
 import { Product } from 'src/products/products.entity';
 import { Order } from 'src/orders/orders.entity';
-import { Exclude } from "class-transformer";
+import { Exclude, Expose } from "class-transformer";
 import { IsEmail } from 'class-validator';
 import * as bcrypt from 'bcrypt';
 
@@ -45,7 +45,7 @@ export class User {
     @Column()
     createdAt:Date;
 
-    @AfterInsert()
+    @BeforeInsert()
     async createDate() {
         const date = new Date();
         this.createdAt = date;
@@ -54,13 +54,13 @@ export class User {
     @Column()
     updatedAt:Date;
 
-    @AfterInsert()
+    @BeforeInsert()
     async createUpdateDate() {
         const date = new Date();
         this.updatedAt = date;
     }
 
-    @AfterUpdate()
+    @BeforeUpdate()
     async updateDate() {
         const date = new Date();
         this.updatedAt = date;
@@ -71,5 +71,6 @@ export class User {
 
     @OneToMany(() => Order, order => order.user, {cascade: true})
     orders: Order[];
+    
 }
 

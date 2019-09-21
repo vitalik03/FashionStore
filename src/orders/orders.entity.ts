@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, AfterInsert, AfterUpdate } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, AfterInsert, AfterUpdate, BeforeUpdate, BeforeInsert } from 'typeorm';
 import { User } from 'src/users/users.entity';
 import { SelectedProducts } from 'src/selected-products/selected-products.entity';
 
@@ -13,7 +13,7 @@ export class Order {
     @Column()
     createdAt:Date;
 
-    @AfterInsert()
+    @BeforeInsert()
     async createDate() {
         const date = new Date();
         this.createdAt = date;
@@ -22,13 +22,13 @@ export class Order {
     @Column()
     updatedAt:Date;
 
-    @AfterInsert()
+    @BeforeInsert()
     async createUpdateDate() {
         const date = new Date();
         this.updatedAt = date;
     }
 
-    @AfterUpdate()
+    @BeforeUpdate()
     async updateDate() {
         const date = new Date();
         this.updatedAt = date;

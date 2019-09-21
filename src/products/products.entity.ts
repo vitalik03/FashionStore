@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, AfterInsert, AfterUpdate} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, AfterInsert, AfterUpdate, BeforeInsert, BeforeUpdate} from 'typeorm';
 import { ClothType } from './enums/clothType.enum';
 import { User } from '../users/users.entity';
 import { Image } from 'src/images/images.entity';
@@ -30,7 +30,7 @@ export class Product {
     @Column()
     createdAt:Date;
 
-    @AfterInsert()
+    @BeforeInsert()
     async createDate() {
         const date = new Date();
         this.createdAt = date;
@@ -39,13 +39,13 @@ export class Product {
     @Column()
     updatedAt:Date;
 
-    @AfterInsert()
+    @BeforeInsert()
     async createUpdateDate() {
         const date = new Date();
         this.updatedAt = date;
     }
 
-    @AfterUpdate()
+    @BeforeUpdate()
     async updateDate() {
         const date = new Date();
         this.updatedAt = date;

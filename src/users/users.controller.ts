@@ -18,11 +18,6 @@ export class UsersController {
 	async create(@Body() createUser: CreateUserDto){
         return await this.usersService.create(createUser);
     }
-
-    @Put('change-password')
-    async changePassword(@Body() password: ChangePasswordDto): Promise<string>{
-        return this.usersService.changePassword(password);
-    }
     
     @UseGuards(AuthGuard('jwt'))
     @Get()
