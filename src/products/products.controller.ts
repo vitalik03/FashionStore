@@ -1,7 +1,7 @@
-import { Controller, Post, Body, UseInterceptors, UploadedFile, Param, Get, Delete, Put, Res, HttpException } from '@nestjs/common';
+import { Controller, Post, Body, UseInterceptors, UploadedFile, Param, Get, Delete, Put, Res, HttpException, UploadedFiles } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { IProduct } from './interfaces/product.interface';
-import { CreateProductDto } from './dto/create-product.dto';
+import { CreateProductDto, CreateBody } from './dto/create-product.dto';
 import { ImagesService } from 'src/images/images.service';
 import { VariantTypeService } from 'src/variant-type/variant-type.service';
 import { VariantValueService } from 'src/variant-value/variant-value.service';
@@ -10,10 +10,12 @@ import { CreateVariantTypeDto } from 'src/variant-type/dto/create-variantType.dt
 import { CreateVariantValueDto } from 'src/variant-value/dto/create-variantValue.dto';
 import { CreateVariantsDto } from 'src/variants/dto/create-variant.dto';
 import { diskStorage } from 'multer';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { IImage } from 'src/images/interfaces/images.interface';
 import { Product } from './products.entity';
 import {succesfulDeleting, imageError} from '../constants/product-responses'
+import { IVariantType } from 'src/variant-type/interfaces/variantType.interface';
+import { ApiImplicitFile, ApiConsumes } from '@nestjs/swagger';
 
 @Controller('products')
 export class ProductsController {
@@ -25,26 +27,28 @@ export class ProductsController {
     ){}
 
     @Post()
-    async createProduct(@Body() createProduct: CreateProductDto,
-                        ): Promise<IProduct>{
-      return await this.productsService.create(createProduct);
-    }
-
-    @Post('/variants')
-    async createVariants(
-                        @Body() createVariantType: CreateVariantTypeDto,
-                        @Body() createVariantValue: CreateVariantValueDto,                      
-                        @Body() createVariants: CreateVariantsDto,
+    async createProduct(@Body() body:CreateBody,
                         ){
-        await this.variantTypeService.create(createVariantType);
-        await this.variantValueService.create(createVariantValue);
-        await this.variantsService.create(createVariants);
-        return createVariants;
+      const {name, brandName, basicPrice, description, cloth, user, quantity, typeName, valueName} = body;
+      const time = new Date();
+      let createdAt = time;
+      let updatedAt = time;
+      const createProduct:IProduct = {name, brandName, basicPrice, description, cloth, user, quantity, createdAt, updatedAt};
+      const createvariantType: IVariantType = {typeName};
+      const product = await this.productsService.create(createProduct);
+      const variantType = await this.variantTypeService.create(createvariantType);
+      const variantValue = await this.variantValueService.create({valueName, variantType: variantType.id});
+      await this.variantsService.create({product: product.id, variantValue: variantValue.id});
+
+      const resultObj = {product, variantType, variantValue};
+      return resultObj;
+      
     }
 
-    @Post(':productId')
+
+    @Post('images/:productId')
     @UseInterceptors(
-     FileInterceptor('image',{
+     FilesInterceptor('image',6,{
       storage: diskStorage({
         destination: './files',
         filename: (req, file, callback) => {
@@ -54,19 +58,25 @@ export class ProductsController {
       }),
       fileFilter: (req, file, callback) => {
         if(!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)){
-          return callback(new Error(imageError),false);
+          return callback(new Error('Only image file are allowed'),false);
         }
         callback(null,true);
       }
      })
     )
-    async uploadFile(@Param('productId') productId: number ,@UploadedFile() file){
-      const image = {
-        imageURL: file.filename,
+    @ApiConsumes('multipart/form-data')
+    @ApiImplicitFile({ name: 'image', required: true })
+    async uploadFile(@Param('productId') productId: number ,@UploadedFiles() files){
+      let file;
+      files.forEach(async element => {
+        const image = {
+        imageURL: element.filename,
         producti: productId
       };
       await this.imageService.create(image);
-      return image;
+      });
+      const message = "Images was successfully added";
+      return message;
     }
 
     @Get('images/:imgpath')
