@@ -7,7 +7,7 @@ import { User } from './users.entity';
 
 @Module({
     imports: [DatabaseModule],
-    providers: [UsersService, ...usersProviders, User],
+    providers: [UsersService, ...usersProviders],
     controllers: [UsersController],
     exports: [UsersService]
 })

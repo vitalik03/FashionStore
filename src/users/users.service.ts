@@ -13,8 +13,7 @@ import {userNotFound, existingEmail, wrongPassword, similarPasswords} from '../c
 export class UsersService {
     constructor(
 		@Inject('USER_REPOSITORY')
-    private readonly userRepository: Repository<User>,
-    private readonly userClass: User	){}
+    private readonly userRepository: Repository<User>){}
 
     async create( user: CreateUserDto ) {
 
@@ -64,9 +63,6 @@ export class UsersService {
     }
     
     async changePassword(password: ChangePasswordDto):Promise<IUser>{
-      if(password.oldPassword === password.newPassword){
-        throw new HttpException(similarPasswords, HttpStatus.BAD_REQUEST);
-      }
       const user = await getRepository(User)
       .createQueryBuilder('user')
       .addSelect('user.password')
@@ -75,6 +71,9 @@ export class UsersService {
       if(!user){
         throw new HttpException(userNotFound, HttpStatus.NOT_FOUND);
       }
+      if(password.oldPassword === password.newPassword){
+        throw new HttpException(similarPasswords, HttpStatus.BAD_REQUEST);
+      }
       const comparedPasswords = await bcrypt.compareSync(password.oldPassword, user.password);
       if(!comparedPasswords){
         throw new HttpException(wrongPassword, HttpStatus.FORBIDDEN);
@@ -82,12 +81,18 @@ export class UsersService {
       if(password.newPassword.length<8 || password.newPassword.length>20){
         throw new HttpException(wrongPassword, HttpStatus.BAD_REQUEST);
       }
-      console.log("1"+user.password);
+
       user.password = password.newPassword;
-      const entity = Object.assign(new User(), user);
-      console.log("5"+user.password);
-      this.userClass.setPassword(password.newPassword);
-      console.log("4"+entity.password);
-      return await this.userRepository.save({entity, id: Number(password.id)});
+
+      const date = new Date();
+
+      const userOne = await getRepository(User)
+      .createQueryBuilder('userOne')
+      .addSelect('userOne.password')
+      .where('userOne.id = :id', { id: password.id })
+      .update('userOne', {password: password.newPassword})
+      .update({updatedAt: date})
+
+      return await this.userRepository.save({userOne, id: Number(password.id)});
     }
 }

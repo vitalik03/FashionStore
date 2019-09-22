@@ -1,4 +1,4 @@
-import { Injectable, HttpException } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { UsersService } from '../users/users.service'
 import { JwtService } from '@nestjs/jwt';
 import { IUser } from 'src/users/interfaces/user.interface';
@@ -6,6 +6,8 @@ import * as bcrypt from 'bcrypt';
 import { UserLogin } from '../users/dto/create-user.dto';
 import { getRepository } from 'typeorm';
 import { User } from 'src/users/users.entity';
+import { userNotFound, wrongPassword } from '../constants/user-responses';
+
 @Injectable()
 export class AuthService {
     constructor(private readonly usersService: UsersService, private readonly jwtService: JwtService) {}
@@ -17,7 +19,7 @@ export class AuthService {
       .where('userOne.email = :email', { email: user.email })
       .getRawOne();
       if(!userOne){
-        throw new HttpException('Not found', 404);
+        throw new HttpException(userNotFound, HttpStatus.NOT_FOUND);
       }
       else{
         const comparedPasswords = await bcrypt.compareSync(user.password, userOne.password);
@@ -25,7 +27,7 @@ export class AuthService {
           return this.login(user);
         }
         else{
-          throw new HttpException('Unauthorized', 400);
+          throw new HttpException(wrongPassword, HttpStatus.BAD_REQUEST);
         }
       }
   }

@@ -72,10 +72,5 @@ export class User {
     @OneToMany(() => Order, order => order.user, {cascade: true})
     orders: Order[];
     
-    async setPassword(newPassword){
-        console.log("2" + this.password);
-        this.password = newPassword;
-        console.log("3" + this.password);
-    }
 }
 
