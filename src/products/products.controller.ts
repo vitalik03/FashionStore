@@ -15,7 +15,7 @@ import { IImage } from 'src/images/interfaces/images.interface';
 import { Product } from './products.entity';
 import {succesfulDeleting, imageError} from '../constants/product-responses'
 import { IVariantType } from 'src/variant-type/interfaces/variantType.interface';
-import { ApiImplicitFile, ApiConsumes, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiImplicitFile, ApiConsumes, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('products')
@@ -30,6 +30,8 @@ export class ProductsController {
     @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
     @Post()
+    @ApiResponse({ status: 201, description: 'Product was succcessfully created'})
+    @ApiResponse({ status: 403, description: 'Product is in the database!'})
     async createProduct(@Body() body: CreateBody,
                         ){
       const {name, brandName, basicPrice, description, cloth, user, quantity, typeName, valueName} = body;
@@ -119,6 +121,7 @@ export class ProductsController {
     }
 
     @Get()
+    @ApiResponse({ status: 200, description: 'List of Products ```[new Product()]```' })
     getProducts(): Promise<IProduct[]> {
       return this.productsService.getProducts();
     }
@@ -126,6 +129,8 @@ export class ProductsController {
     @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
     @Get(':id')
+    @ApiResponse({ status: 200, description: 'Product Object ```new Product()```' })
+    @ApiResponse({ status: 404, description: 'Error Exception ```{ statusCode: 404, message: "Not found" }```' })
    async getOne(@Param('id') id: string): Promise<IProduct> {
       return this.productsService.getProduct(id);
     }

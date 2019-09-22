@@ -6,7 +6,7 @@ import { CreateSelectedProductDto } from 'src/selected-products/dto/create-sp.dt
 import { SelectedProductsService } from 'src/selected-products/selected-products.service';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 
 
 @Controller('orders')
@@ -16,6 +16,8 @@ export class OrdersController {
     @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
     @Post()
+    @ApiResponse({ status: 201, description: 'Order was succcessfully created'})
+    @ApiResponse({ status: 403, description: 'Order is in the database!'})
     async createOrder(@Body() createOrder: CreateOrderDto):Promise<IOrder>{
         return await this.ordersService.create(createOrder);
     }
@@ -23,6 +25,7 @@ export class OrdersController {
     @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
     @Get()
+    @ApiResponse({ status: 200, description: 'List of Orders ```[new Order()]```' })
     async get():Promise<IOrder[]>{
         return await this.ordersService.getAll();
     }
@@ -30,6 +33,8 @@ export class OrdersController {
     @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
     @Get(':id')
+    @ApiResponse({ status: 200, description: 'Order Object ```new Order()```' })
+    @ApiResponse({ status: 404, description: 'Error Exception ```{ statusCode: 404, message: "Not found" }```' })
     async getId(@Param('id') id:string):Promise<IOrder>{
         return await this.ordersService.getId(id);
     }

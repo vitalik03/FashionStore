@@ -13,8 +13,8 @@ export class UsersController {
     constructor(private readonly usersService: UsersService){}
 
     @Post()
-    @ApiResponse({ status: 201, description: succesfulCreating})
-    @ApiResponse({ status: HttpStatus.FOUND, description: existingEmail})
+    @ApiResponse({ status: 201, description: 'User was successfully created!'})
+    @ApiResponse({ status: 403, description: 'User is in database!'})
 	async create(@Body() createUser: CreateUserDto){
         return await this.usersService.create(createUser);
     }
@@ -23,6 +23,7 @@ export class UsersController {
     @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
     @Get()
+    @ApiResponse({ status: 200, description: 'List of Users ```[new User()]```' })
     async getUsers(): Promise<IUser[]> {
       return this.usersService.getUsers();
     };
@@ -30,6 +31,8 @@ export class UsersController {
     @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
     @Get(':id')
+    @ApiResponse({ status: 200, description: 'User Object ```new User()```' })
+    @ApiResponse({ status: 404, description: 'Error Exception ```{ statusCode: 404, message: "Not found" }```' })
     async getById(@Param('id') id: string): Promise<IUser>{
         return await this.usersService.getById(id);
     }
