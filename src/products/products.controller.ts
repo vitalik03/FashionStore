@@ -100,6 +100,10 @@ export class ProductsController {
       return this.imageService.getAll();
     }
 
+    @Delete('/image/:imageId')
+    async deleteimage(@Param('imageid') id: number): Promise<IImage> {
+        return await this.imageService.delete(id);
+    }
 
     @Get()
     getProducts(): Promise<IProduct[]> {

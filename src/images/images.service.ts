@@ -1,6 +1,7 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { IImage } from './interfaces/images.interface';
+import { imageNotfound } from 'src/constants/image-responses';
 
 @Injectable()
 export class ImagesService {
@@ -16,4 +17,12 @@ export class ImagesService {
     async getAll(){
       return await this.imageRepository.find();
     }
+
+    async delete(id: number): Promise<IImage> {
+      const findImage = await this.imageRepository.findOne(id);
+      if (!findImage) {
+          throw new HttpException(imageNotfound, HttpStatus.NOT_FOUND);
+      }
+      return await this.imageRepository.remove(findImage);
+  }
 }
