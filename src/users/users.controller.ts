@@ -7,6 +7,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { AuthGuard } from '@nestjs/passport';
 import {succesfulCreating, existingEmail} from '../constants/user-responses'
+import { RolesGuard } from 'src/guards/roles-guard';
 
 @Controller('users')
 export class UsersController {
@@ -45,7 +46,7 @@ export class UsersController {
 	}
 
     @ApiBearerAuth()
-    @UseGuards(AuthGuard('jwt'))
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
 	@Delete(':id')
 	async delete(@Param('id') id:string){
 		return await this.usersService.delete(id);
