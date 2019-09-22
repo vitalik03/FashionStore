@@ -59,3 +59,40 @@ export class CreateBody{
     readonly valueName: string[];
     
 }
+
+export class CreateVariants{
+    
+    @ApiModelProperty()
+    readonly typeName:  variantsOfName;
+
+    @ApiModelProperty()
+    readonly valueName: string[];
+    
+}
+
+export class UpdateBody{
+    @ApiModelProperty()
+    readonly name: string;
+
+    @ApiModelProperty()
+    readonly brandName: string;
+
+    @ApiModelProperty()
+    readonly basicPrice: number;
+    
+    @ApiModelProperty()
+    readonly description: string;
+    
+    @ApiModelProperty()
+    readonly cloth: ClothType;
+    
+    @ApiModelProperty()
+    readonly quantity: number;
+    
+    @ApiModelProperty()
+    readonly typeName:  variantsOfName;
+
+    @ApiModelProperty()
+    readonly valueName: string[];
+    
+}

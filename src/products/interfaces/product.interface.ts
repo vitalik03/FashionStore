@@ -9,6 +9,6 @@ export interface IProduct{
     cloth: ClothType;
     quantity: number;
     user: number;
-    createdAt: Date;
+    createdAt?: Date;
     updatedAt: Date;
 }

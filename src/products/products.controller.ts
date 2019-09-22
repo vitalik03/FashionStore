@@ -1,7 +1,7 @@
-import { Controller, Post, Body, UseInterceptors, UploadedFile, Param, Get, Delete, Put, Res, HttpException, UploadedFiles } from '@nestjs/common';
+import { Controller, Post, Body, UseInterceptors, UploadedFile, Param, Get, Delete, Put, Res, HttpException, UploadedFiles, UseGuards } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { IProduct } from './interfaces/product.interface';
-import { CreateProductDto, CreateBody } from './dto/create-product.dto';
+import { CreateProductDto, CreateBody, CreateVariants, UpdateBody } from './dto/create-product.dto';
 import { ImagesService } from 'src/images/images.service';
 import { VariantTypeService } from 'src/variant-type/variant-type.service';
 import { VariantValueService } from 'src/variant-value/variant-value.service';
@@ -15,7 +15,8 @@ import { IImage } from 'src/images/interfaces/images.interface';
 import { Product } from './products.entity';
 import {succesfulDeleting, imageError} from '../constants/product-responses'
 import { IVariantType } from 'src/variant-type/interfaces/variantType.interface';
-import { ApiImplicitFile, ApiConsumes } from '@nestjs/swagger';
+import { ApiImplicitFile, ApiConsumes, ApiBearerAuth } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('products')
 export class ProductsController {
@@ -26,8 +27,10 @@ export class ProductsController {
                 private readonly variantsService: VariantsService           
     ){}
 
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard('jwt'))
     @Post()
-    async createProduct(@Body() body:CreateBody,
+    async createProduct(@Body() body: CreateBody,
                         ){
       const {name, brandName, basicPrice, description, cloth, user, quantity, typeName, valueName} = body;
       const time = new Date();
@@ -45,7 +48,22 @@ export class ProductsController {
       
     }
 
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard('jwt'))
+    @Post('/variants/:productId')
+    async createVariants(@Param('productId') productId: number ,@Body() body: CreateVariants){
+      const {typeName, valueName} = body;
+      const createvariantType: IVariantType = {typeName};
+      const variantType = await this.variantTypeService.create(createvariantType);
+      const variantValue = await this.variantValueService.create({valueName, variantType: variantType.id});
+      await this.variantsService.create({product: productId, variantValue: variantValue.id});
 
+      return {variantType, variantValue};
+    }
+
+
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard('jwt'))
     @Post('images/:productId')
     @UseInterceptors(
      FilesInterceptor('image',6,{
@@ -79,36 +97,65 @@ export class ProductsController {
       return message;
     }
 
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard('jwt'))
     @Get('images/:imgpath')
     seeUploadedFile(@Param('imgpath') image: string, @Res() res){
       return res.sendFile(image, { root: './files'});
     }
-
+    
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard('jwt'))
     @Get('images')
     getImages(): Promise<IImage[]>{
       return this.imageService.getAll();
     }
 
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard('jwt'))
+    @Delete('/image/:imageId')
+    async deleteimage(@Param('imageid') id: number): Promise<IImage> {
+        return await this.imageService.delete(id);
+    }
 
     @Get()
     getProducts(): Promise<IProduct[]> {
       return this.productsService.getProducts();
     }
 
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard('jwt'))
     @Get(':id')
    async getOne(@Param('id') id: string): Promise<IProduct> {
       return this.productsService.getProduct(id);
     }
 
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard('jwt'))
     @Delete(':id/:userId')
    async delete(@Param('id') id: number, @Param('userId') userId : number){
     await this.productsService.delete(id, userId);
     const message = succesfulDeleting;
     return message;
   }
-    
-    @Put(':id')
-	async update(@Param('id') id: string, @Body() updateProduct: CreateProductDto): Promise<IProduct>{
-		return await this.productsService.update(id, updateProduct);
+  
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard('jwt'))
+    @Put(':productId/:userId')
+	  async update(@Param('productId') id: number, @Body() updateProduct: UpdateBody, @Param('userId') userId: number){
+      const {name, brandName, basicPrice, description, cloth, quantity, typeName, valueName} = updateProduct;
+      const time = new Date();
+      let updatedAt = time;
+      const user = userId;
+      const createProduct:IProduct = {name, brandName, basicPrice, description, user ,cloth, quantity, updatedAt};
+      const createvariantType: IVariantType = {typeName};
+      const product = await this.productsService.update(id, createProduct,userId);
+      const variant = await this.variantsService.findOne(product.id);
+      await this.variantsService.delete(variant.id);
+      const variantType = await this.variantTypeService.create(createvariantType);
+      const variantValue = await this.variantValueService.create({valueName, variantType: variantType.id});
+      await this.variantsService.create({product: id, variantValue: variantValue.id});
+
+      return {product,variantType,variantValue};
 	}
 }

@@ -12,4 +12,10 @@ export class VariantsService {
     async create(variants: IVariants): Promise<IVariants>{
       return await this.variantsRepository.save(variants);
     }
+    async findOne(productId: number): Promise<IVariants>{
+      return await this.variantsRepository.findOne({ where: [{ "product": productId }]})
+    }
+    async delete(id: number){
+      return await this.variantsRepository.delete(id);
+    }
 }
