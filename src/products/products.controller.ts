@@ -15,7 +15,7 @@ import { IImage } from 'src/images/interfaces/images.interface';
 import { Product } from './products.entity';
 import {succesfulDeleting, imageError} from '../constants/product-responses'
 import { IVariantType } from 'src/variant-type/interfaces/variantType.interface';
-import { ApiImplicitFile, ApiConsumes } from '@nestjs/swagger';
+import { ApiImplicitFile, ApiConsumes, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('products')
@@ -27,6 +27,7 @@ export class ProductsController {
                 private readonly variantsService: VariantsService           
     ){}
 
+    @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
     @Post()
     async createProduct(@Body() body: CreateBody,
@@ -47,6 +48,7 @@ export class ProductsController {
       
     }
 
+    @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
     @Post('/variants/:productId')
     async createVariants(@Param('productId') productId: number ,@Body() body: CreateVariants){
@@ -60,6 +62,7 @@ export class ProductsController {
     }
 
 
+    @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
     @Post('images/:productId')
     @UseInterceptors(
@@ -94,18 +97,21 @@ export class ProductsController {
       return message;
     }
 
+    @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
     @Get('images/:imgpath')
     seeUploadedFile(@Param('imgpath') image: string, @Res() res){
       return res.sendFile(image, { root: './files'});
     }
     
+    @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
     @Get('images')
     getImages(): Promise<IImage[]>{
       return this.imageService.getAll();
     }
 
+    @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
     @Delete('/image/:imageId')
     async deleteimage(@Param('imageid') id: number): Promise<IImage> {
@@ -117,12 +123,14 @@ export class ProductsController {
       return this.productsService.getProducts();
     }
 
+    @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
     @Get(':id')
    async getOne(@Param('id') id: string): Promise<IProduct> {
       return this.productsService.getProduct(id);
     }
 
+    @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
     @Delete(':id/:userId')
    async delete(@Param('id') id: number, @Param('userId') userId : number){
@@ -131,6 +139,7 @@ export class ProductsController {
     return message;
   }
   
+    @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
     @Put(':productId/:userId')
 	  async update(@Param('productId') id: number, @Body() updateProduct: UpdateBody, @Param('userId') userId: number){
