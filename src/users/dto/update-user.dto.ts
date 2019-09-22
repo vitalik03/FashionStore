@@ -8,9 +8,6 @@ export class UpdateUserDto{
     readonly lastName: string;
     
     @ApiModelProperty()
-    readonly email: string;
-    
-    @ApiModelProperty()
     readonly city: string;
     
     @ApiModelProperty()
@@ -18,9 +15,6 @@ export class UpdateUserDto{
     
     @ApiModelProperty()
     readonly zip: string;
-
-    @ApiModelProperty()
-    readonly role: "ADMIN" | "USER";
 
     readonly updatedAt: Date;
 }

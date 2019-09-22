@@ -13,7 +13,8 @@ import {userNotFound, existingEmail, wrongPassword, similarPasswords} from '../c
 export class UsersService {
     constructor(
 		@Inject('USER_REPOSITORY')
-    private readonly userRepository: Repository<User>	){}
+    private readonly userRepository: Repository<User>,
+    private readonly userClass: User	){}
 
     async create( user: CreateUserDto ) {
 
@@ -81,8 +82,12 @@ export class UsersService {
       if(password.newPassword.length<8 || password.newPassword.length>20){
         throw new HttpException(wrongPassword, HttpStatus.BAD_REQUEST);
       }
+      console.log("1"+user.password);
       user.password = password.newPassword;
       const entity = Object.assign(new User(), user);
+      console.log("5"+user.password);
+      this.userClass.setPassword(password.newPassword);
+      console.log("4"+entity.password);
       return await this.userRepository.save({entity, id: Number(password.id)});
     }
 }
