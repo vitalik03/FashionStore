@@ -19,7 +19,7 @@ export class UsersService {
 
 		const testUser = await this.userRepository.findOne({ where: [{ "email": user.email }]});
 		if( testUser ){
-			throw new HttpException(existingEmail, 409);
+			throw new HttpException(existingEmail, HttpStatus.FOUND);
 		}
     const entity = Object.assign(new User(), user);
 		return await this.userRepository.save(entity);
@@ -82,17 +82,12 @@ export class UsersService {
         throw new HttpException(wrongPassword, HttpStatus.BAD_REQUEST);
       }
 
-      user.password = password.newPassword;
-
+      const entity = Object.assign(new User(), user);
+      const hashedPassword = await bcrypt.hash(password.newPassword, 10);
+      entity.user_password = hashedPassword;
+      entity.password = hashedPassword;
       const date = new Date();
-
-      const userOne = await getRepository(User)
-      .createQueryBuilder('userOne')
-      .addSelect('userOne.password')
-      .where('userOne.id = :id', { id: password.id })
-      .update('userOne', {password: password.newPassword})
-      .update({updatedAt: date})
-
-      return await this.userRepository.save({userOne, id: Number(password.id)});
+      entity.updatedAt = date;
+      return await this.userRepository.save({...entity, id: Number(password.id)});
     }
 }
