@@ -3,7 +3,7 @@ import { IProduct } from './interfaces/product.interface';
 import { Repository } from 'typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
 import { Product } from './products.entity';
-import {productNotFound} from '../constants/product-responses'
+import {productNotFound, ownerNotFound} from '../constants/product-responses'
 
 @Injectable()
 export class ProductsService {
@@ -30,18 +30,24 @@ export class ProductsService {
 
   async delete(id: number, userId: number){
     const checkProductByOwner = await this.productRepository.findOne({ where: { "user": userId }, relations:['user']});
+    if(!checkProductByOwner){
+      throw new HttpException(ownerNotFound, HttpStatus.NOT_FOUND);
+    }
     const product = await this.productRepository.findOne(id, {relations:['user']})
-    
     if (JSON.stringify(checkProductByOwner.user) !== JSON.stringify(product.user)) {
-      throw new HttpException(productNotFound, HttpStatus.NOT_FOUND);
+      throw new HttpException(ownerNotFound, HttpStatus.NOT_FOUND);
     }
 		return await this.productRepository.delete(id);
   }
   
-  async update(id: string, product: IProduct): Promise<IProduct>{
-    const testproduct = await this.productRepository.findOne(id);
-    if (!testproduct) {
-      throw new HttpException(productNotFound, HttpStatus.NOT_FOUND);
+  async update(id: number, product: IProduct, userId: number): Promise<IProduct>{
+    const checkProductByOwner = await this.productRepository.findOne({ where: { "user": userId }, relations:['user']});
+    const products = await this.productRepository.findOne(id, {relations:['user']})
+    if(!checkProductByOwner){
+      throw new HttpException(ownerNotFound, HttpStatus.NOT_FOUND);
+    }
+    if (JSON.stringify(checkProductByOwner.user) !== JSON.stringify(products.user)) {
+      throw new HttpException(ownerNotFound, HttpStatus.NOT_FOUND);
     }
 		return await this.productRepository.save({ ...product, id: Number(id) });
   }

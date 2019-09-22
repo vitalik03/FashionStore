@@ -1,7 +1,7 @@
 import { Controller, Post, Body, UseInterceptors, UploadedFile, Param, Get, Delete, Put, Res, HttpException, UploadedFiles } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { IProduct } from './interfaces/product.interface';
-import { CreateProductDto, CreateBody } from './dto/create-product.dto';
+import { CreateProductDto, CreateBody, CreateVariants, UpdateBody } from './dto/create-product.dto';
 import { ImagesService } from 'src/images/images.service';
 import { VariantTypeService } from 'src/variant-type/variant-type.service';
 import { VariantValueService } from 'src/variant-value/variant-value.service';
@@ -27,7 +27,7 @@ export class ProductsController {
     ){}
 
     @Post()
-    async createProduct(@Body() body:CreateBody,
+    async createProduct(@Body() body: CreateBody,
                         ){
       const {name, brandName, basicPrice, description, cloth, user, quantity, typeName, valueName} = body;
       const time = new Date();
@@ -43,6 +43,17 @@ export class ProductsController {
       const resultObj = {product, variantType, variantValue};
       return resultObj;
       
+    }
+
+    @Post('/variants/:productId')
+    async createVariants(@Param('productId') productId: number ,@Body() body: CreateVariants){
+      const {typeName, valueName} = body;
+      const createvariantType: IVariantType = {typeName};
+      const variantType = await this.variantTypeService.create(createvariantType);
+      const variantValue = await this.variantValueService.create({valueName, variantType: variantType.id});
+      await this.variantsService.create({product: productId, variantValue: variantValue.id});
+
+      return {variantType, variantValue};
     }
 
 
@@ -107,8 +118,21 @@ export class ProductsController {
     return message;
   }
     
-    @Put(':id')
-	async update(@Param('id') id: string, @Body() updateProduct: CreateProductDto): Promise<IProduct>{
-		return await this.productsService.update(id, updateProduct);
+    @Put(':productId/:userId')
+	async update(@Param('productId') id: number, @Body() updateProduct: UpdateBody, @Param('userId') userId: number){
+      const {name, brandName, basicPrice, description, cloth, quantity, typeName, valueName} = updateProduct;
+      const time = new Date();
+      let updatedAt = time;
+      const user = userId;
+      const createProduct:IProduct = {name, brandName, basicPrice, description, user ,cloth, quantity, updatedAt};
+      const createvariantType: IVariantType = {typeName};
+      const product = await this.productsService.update(id, createProduct,userId);
+      const variant = await this.variantsService.findOne(product.id);
+      await this.variantsService.delete(variant.id);
+      const variantType = await this.variantTypeService.create(createvariantType);
+      const variantValue = await this.variantValueService.create({valueName, variantType: variantType.id});
+      await this.variantsService.create({product: id, variantValue: variantValue.id});
+
+      return {product,variantType,variantValue};
 	}
 }
