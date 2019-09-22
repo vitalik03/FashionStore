@@ -19,22 +19,26 @@ export class UsersController {
         return await this.usersService.create(createUser);
     }
     
+
     @UseGuards(AuthGuard('jwt'))
     @Get()
     async getUsers(): Promise<IUser[]> {
       return this.usersService.getUsers();
     };
 
+    @UseGuards(AuthGuard('jwt'))
     @Get(':id')
     async getById(@Param('id') id: string): Promise<IUser>{
         return await this.usersService.getById(id);
     }
     
+    @UseGuards(AuthGuard('jwt'))
 	@Put(':id')
 	async update(@Param('id') id: string, @Body() updateUser: UpdateUserDto): Promise<IUser>{
 		return await this.usersService.update(id, updateUser);
 	}
 
+    @UseGuards(AuthGuard('jwt'))
 	@Delete(':id')
 	async delete(@Param('id') id:string){
 		return await this.usersService.delete(id);
