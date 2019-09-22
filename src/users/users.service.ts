@@ -20,7 +20,7 @@ export class UsersService {
 
 		const testUser = await this.userRepository.findOne({ where: [{ "email": user.email }]});
 		if( testUser ){
-			throw new HttpException(existingEmail, HttpStatus.FOUND);
+			throw new HttpException(existingEmail, 409);
 		}
     const entity = Object.assign(new User(), user);
 		return await this.userRepository.save(entity);
