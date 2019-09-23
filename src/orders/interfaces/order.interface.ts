@@ -1,7 +1,10 @@
-export interface IOrder {
-    id: number;
+export class IOrder {
     status: 'Completed' | 'Opened';
+    user: number;
     createdAt: Date;
     updatedAt: Date;
-    userId: number;
+    
+    constructor(partial: Partial<IOrder>) {
+        Object.assign(this, partial);
+    }
 }

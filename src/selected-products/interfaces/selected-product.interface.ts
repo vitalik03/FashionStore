@@ -2,6 +2,6 @@ export interface ISelectedProduct{
     id: number;
     price: number;
     quantity: number;
-    orderId: number;
-    variantsId: number;
+    order: number;
+    variants: number;
 }
