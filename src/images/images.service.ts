@@ -15,7 +15,7 @@ export class ImagesService {
     }
 
     async getAll(){
-      return await this.imageRepository.find();
+      return await this.imageRepository.find({relations: ['producti']});
     }
 
     async delete(id: number): Promise<IImage> {
