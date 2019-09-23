@@ -6,7 +6,7 @@ import { ApiResponse, ApiBearerAuth, ApiUseTags } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { AuthGuard } from '@nestjs/passport';
-import {succesfulCreating, existingEmail} from '../constants/user-responses'
+import {succesfulCreating, existingEmail, succesfulDeleting} from '../constants/user-responses'
 import { RolesGuard } from 'src/guards/roles-guard';
 
 @ApiUseTags('users')
@@ -50,6 +50,7 @@ export class UsersController {
     @UseGuards(AuthGuard('jwt'), RolesGuard)
 	@Delete(':id')
 	async delete(@Param('id') id:string){
-		return await this.usersService.delete(id);
-	}
+		await this.usersService.delete(id);
+        return succesfulDeleting;
+    }
 }

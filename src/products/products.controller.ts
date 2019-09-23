@@ -13,7 +13,7 @@ import { diskStorage } from 'multer';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { IImage } from 'src/images/interfaces/images.interface';
 import { Product } from './products.entity';
-import {succesfulDeleting, imageError} from '../constants/product-responses'
+import {succesfulDeleting, imageError, succesfulDeletingImage} from '../constants/product-responses'
 import { IVariantType } from 'src/variant-type/interfaces/variantType.interface';
 import { ApiImplicitFile, ApiConsumes, ApiBearerAuth, ApiResponse, ApiUseTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
@@ -117,8 +117,10 @@ export class ProductsController {
     @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
     @Delete('/image/:imageId')
-    async deleteimage(@Param('imageid') id: number): Promise<IImage> {
-        return await this.imageService.delete(id);
+    async deleteimage(@Param('imageid') id: number){
+        await this.imageService.delete(id);
+        return succesfulDeletingImage;
+
     }
 
     @Get()
