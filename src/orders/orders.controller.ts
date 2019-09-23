@@ -6,9 +6,9 @@ import { CreateSelectedProductDto } from 'src/selected-products/dto/create-sp.dt
 import { SelectedProductsService } from 'src/selected-products/selected-products.service';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiUseTags } from '@nestjs/swagger';
 
-
+@ApiUseTags('orders')
 @Controller('orders')
 export class OrdersController {
     constructor(private readonly ordersService: OrdersService){}

@@ -2,13 +2,14 @@ import { Controller, Get, Post, Body, HttpStatus, HttpException, Param, Put, Del
 import { UsersService } from './users.service';
 import { IUser } from './interfaces/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
-import { ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiResponse, ApiBearerAuth, ApiUseTags } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { AuthGuard } from '@nestjs/passport';
 import {succesfulCreating, existingEmail} from '../constants/user-responses'
 import { RolesGuard } from 'src/guards/roles-guard';
 
+@ApiUseTags('users')
 @Controller('users')
 export class UsersController {
     constructor(private readonly usersService: UsersService){}
@@ -21,9 +22,9 @@ export class UsersController {
     }
     
 
+    @Get()
     @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
-    @Get()
     @ApiResponse({ status: 200, description: 'List of Users ```[new User()]```' })
     async getUsers(): Promise<IUser[]> {
       return this.usersService.getUsers();

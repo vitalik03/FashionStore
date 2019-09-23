@@ -15,9 +15,10 @@ import { IImage } from 'src/images/interfaces/images.interface';
 import { Product } from './products.entity';
 import {succesfulDeleting, imageError} from '../constants/product-responses'
 import { IVariantType } from 'src/variant-type/interfaces/variantType.interface';
-import { ApiImplicitFile, ApiConsumes, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
+import { ApiImplicitFile, ApiConsumes, ApiBearerAuth, ApiResponse, ApiUseTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 
+@ApiUseTags('products')
 @Controller('products')
 export class ProductsController {
     constructor(private readonly productsService: ProductsService,
