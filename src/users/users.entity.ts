@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, ManyToMany, JoinTable, AfterUpdate, AfterInsert, BeforeInsert, BeforeUpdate } from 'typeorm';
-import { Product } from 'src/products/products.entity';
-import { Order } from 'src/orders/orders.entity';
+import { Product } from '../products/products.entity';
+import { Order } from '../orders/orders.entity';
 import { Exclude, Expose } from "class-transformer";
 import { IsEmail } from 'class-validator';
 import * as bcrypt from 'bcrypt';

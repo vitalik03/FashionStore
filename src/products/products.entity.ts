@@ -1,8 +1,8 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, AfterInsert, AfterUpdate, BeforeInsert, BeforeUpdate} from 'typeorm';
 import { ClothType } from './enums/clothType.enum';
 import { User } from '../users/users.entity';
-import { Image } from 'src/images/images.entity';
-import { Variants } from 'src/variants/variants.entity';
+import { Image } from '../images/images.entity';
+import { Variants } from '../variants/variants.entity';
 
 @Entity()
 export class Product {

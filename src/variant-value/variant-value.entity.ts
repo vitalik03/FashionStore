@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany} from 'typeorm';
-import { VariantType } from 'src/variant-type/variant-type.entity';
-import { Variants } from 'src/variants/variants.entity';
+import { VariantType } from '../variant-type/variant-type.entity';
+import { Variants } from '../variants/variants.entity';
 
 @Entity()
 export class VariantValue {

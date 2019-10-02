@@ -1,7 +1,7 @@
 import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { IImage } from './interfaces/images.interface';
-import { imageNotfound } from 'src/constants/image-responses';
+import { imageNotfound } from '../constants/image-responses';
 
 @Injectable()
 export class ImagesService {

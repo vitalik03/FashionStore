@@ -1,11 +1,11 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { UsersService } from '../users/users.service'
 import { JwtService } from '@nestjs/jwt';
-import { IUser } from 'src/users/interfaces/user.interface';
+import { IUser } from '../users/interfaces/user.interface';
 import * as bcrypt from 'bcrypt';
 import { UserLogin } from '../users/dto/create-user.dto';
 import { getRepository } from 'typeorm';
-import { User } from 'src/users/users.entity';
+import { User } from '../users/users.entity';
 import { userNotFound, wrongPassword } from '../constants/user-responses';
 
 @Injectable()

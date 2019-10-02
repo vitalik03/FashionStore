@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany} from 'typeorm';
 import { variantsOfName } from './enums/variantsOfName';
-import { VariantValue } from 'src/variant-value/variant-value.entity';
+import { VariantValue } from '../variant-value/variant-value.entity';
 
 
 @Entity()

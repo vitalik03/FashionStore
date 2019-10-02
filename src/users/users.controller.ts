@@ -7,7 +7,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { AuthGuard } from '@nestjs/passport';
 import {succesfulCreating, existingEmail, succesfulDeleting} from '../constants/user-responses'
-import { RolesGuard } from 'src/guards/roles-guard';
+import { RolesGuard } from '../guards/roles-guard';
 
 @ApiUseTags('users')
 @Controller('users')

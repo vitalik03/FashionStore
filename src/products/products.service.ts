@@ -28,6 +28,14 @@ export class ProductsService {
     return product;
   }
 
+  async getProductByName(name: string): Promise<IProduct>{
+    const product = await this.productRepository.findOne({ where: {'name': name}});
+    if (!product) {
+      throw new HttpException(productNotFound, HttpStatus.NOT_FOUND);
+    }
+    return product;
+  }
+  
   async delete(id: number, userId: number){
     const checkProductByOwner = await this.productRepository.findOne({ where: { "user": userId }, relations:['user']});
     if(!checkProductByOwner){

@@ -1,6 +1,6 @@
 import { ClothType } from "../enums/clothType.enum";
 import { ApiModelProperty } from "@nestjs/swagger";
-import { variantsOfName } from "src/variant-type/enums/variantsOfName";
+import { variantsOfName } from "../enums/variantsOfName";
 
 export class CreateProductDto{
     @ApiModelProperty()
