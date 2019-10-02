@@ -35,7 +35,7 @@ export class ProductsService {
     }
     return product;
   }
-  
+
   async delete(id: number, userId: number){
     const checkProductByOwner = await this.productRepository.findOne({ where: { "user": userId }, relations:['user']});
     if(!checkProductByOwner){
