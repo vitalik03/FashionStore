@@ -13,7 +13,7 @@ export const databaseProviders = [
         useFactory: async () => await createConnection({
             type: 'postgres',
             host: 'localhost',
-            port: 3306,
+            port: 5432,
             username: 'postgres',
             password: 'admin',
             database: 'FashionStore',
