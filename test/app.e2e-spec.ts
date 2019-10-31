@@ -1,23 +1,30 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
+import { Connection } from 'typeorm';
+import { DatabaseModule } from 'src/core/database.module';
 
 describe('AppController (e2e)', () => {
   let app;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule, DatabaseModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
   });
 
-  it('/ (GET)', () => {
+  it('/users (Post)', () => {
     return request(app.getHttpServer())
-      .get('/')
+      .post('/users')
       .expect(200)
-      .expect('Hello World!');
   });
+
+  afterAll(async () => {
+    const connection = app.get(Connection);
+    connection.close();
+  });
+  
 });
