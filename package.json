@@ -44,7 +44,7 @@
     "swagger": "^0.7.5",
     "swagger-ui-express": "^4.1.0",
     "ts-class-validator": "^0.2.2",
-    "typeorm": "^0.2.18"
+    "typeorm": "^0.2.25"
   },
   "devDependencies": {
     "@nestjs/testing": "6.1.1",
